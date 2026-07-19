@@ -1,0 +1,23 @@
+##### LOCAWEB - NAO REMOVER #####
+#AddHandler php80-script .php
+#suPHP_ConfigPath /home/burysurf1/
+##### LOCAWEB - NAO REMOVER #####
+
+# Prioriza index.php
+DirectoryIndex index.php index.html
+
+RewriteEngine On
+
+# Forçar HTTPS e www (301 permanente), preservando caminho e query string
+RewriteCond %{HTTPS} !=on [OR]
+RewriteCond %{HTTP_HOST} !^www\.burysurf\.com$ [NC]
+RewriteRule ^ https://www.burysurf.com%{REQUEST_URI} [R=301,L]
+
+# Redirecionar index.html para raiz (preserva SEO)
+RewriteRule ^index\.html$ / [R=301,L]
+
+# Se você usa index.php como front controller (URLs amigáveis)
+# Ignora arquivos e pastas reais
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /index.php [QSA,L]

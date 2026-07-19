@@ -1,0 +1,1 @@
+Weekly wave forecast & historical phenomenological record of the Balneário Camboriú coastline (blog & vlog).
