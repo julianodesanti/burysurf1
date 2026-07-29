@@ -18,6 +18,15 @@
 	<title>bUrY_+sUrF</title>
 	<link rel="icon" type="image/x-icon" href="./css/img/favicon.png">
 </head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-S5G2HVDDKB">
+</script>
+<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag() { dataLayer.push(arguments); }
+	gtag('js', new Date());
+	gtag('config', 'G-S5G2HVDDKB');
+</script>
 <body>
 	<header>
 		<div id="capa">

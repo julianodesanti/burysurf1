@@ -48,6 +48,15 @@ $sql = "SELECT ss.spot_id as id, ss.spot_name as name, ss.image, sc.wave_size, s
         .blog-form button:hover { background: #0052a3; }
     </style>
 </head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-S5G2HVDDKB">
+</script>
+<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag() { dataLayer.push(arguments); }
+	gtag('js', new Date());
+	gtag('config', 'G-S5G2HVDDKB');
+</script>
 <body>
     <main>
         <h2>Administrador</h2>
