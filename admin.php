@@ -121,6 +121,21 @@ $sql = "SELECT ss.spot_id as id, ss.spot_name as name, ss.image, sc.wave_size, s
                 <div class="upload-status" id="blog-post-status"></div>
             </form>
         </div>
+
+        <div class="blog-form" style="margin-top:18px;">
+            <h3>Enviar newsletter</h3>
+            <p>Envie um aviso simples por e-mail para todos os inscritos quando as fotos do dia estiverem prontas.</p>
+            <label>Assunto
+                <input type="text" id="newsletter-subject" value="Novas fotos do dia no bUrY_+sUrF" />
+            </label>
+            <label>Mensagem (texto simples)
+                <textarea id="newsletter-body">Há novas fotos do dia no site. Visite para ver as atualizações.</textarea>
+            </label>
+            <div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
+                <button id="send-newsletter-btn" type="button" style="background:#32CD32;color:#000;border:none;padding:10px 14px;border-radius:4px;cursor:pointer;font-weight:bold;">Enviar newsletter</button>
+                <div class="upload-status" id="newsletter-send-status"></div>
+            </div>
+        </div>
     </main>
 
     <script>
@@ -242,6 +257,41 @@ $sql = "SELECT ss.spot_id as id, ss.spot_name as name, ss.image, sc.wave_size, s
                 } catch (error) {
                     blogStatus.textContent = 'Erro de rede: ' + error.message;
                     blogStatus.className = 'upload-status status-error';
+                }
+            });
+        }
+
+        // Newsletter send button
+        const sendBtn = document.getElementById('send-newsletter-btn');
+        const sendStatus = document.getElementById('newsletter-send-status');
+        if (sendBtn) {
+            sendBtn.addEventListener('click', async () => {
+                if (!confirm('Enviar newsletter para todos os inscritos agora?')) return;
+                const subject = document.getElementById('newsletter-subject').value || '';
+                const body = document.getElementById('newsletter-body').value || '';
+                sendStatus.textContent = 'Enviando...';
+                sendStatus.className = 'upload-status';
+                try {
+                    const params = new URLSearchParams();
+                    params.append('subject', subject);
+                    params.append('body', body);
+                    const res = await fetch('./api/newsletter_send.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: params.toString(),
+                        credentials: 'same-origin'
+                    });
+                    const j = await res.json();
+                    if (j && j.success) {
+                        sendStatus.textContent = `Enviado: ${j.sent}, Falhas: ${j.failed}`;
+                        sendStatus.className = 'upload-status status-ok';
+                    } else {
+                        sendStatus.textContent = 'Erro: ' + (j.error || 'Falha no envio');
+                        sendStatus.className = 'upload-status status-error';
+                    }
+                } catch (err) {
+                    sendStatus.textContent = 'Erro de rede: ' + err.message;
+                    sendStatus.className = 'upload-status status-error';
                 }
             });
         }
