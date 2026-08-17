@@ -38,6 +38,17 @@ if ($sres = $conn->query($spotSql)) {
 		content="Weekly wave forecast & historical phenomenological record of the Balneário Camboriú coastline (blog & vlog)." />
     <meta property="og:locale" content="pt_BR" />
     <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <style>
+    /* Newsletter modal styles */
+    #ns-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 9999; }
+    #ns-modal { background: #0b0b0b; border: 2px solid #32CD32; color: #fff; padding: 18px; width: 320px; max-width: 90%; border-radius: 8px; font-family: 'Inconsolata', monospace; }
+    #ns-modal h3 { margin: 0 0 8px 0; font-family: papyrus, sans-serif; color: #00FF00; }
+    #ns-modal .ns-close { position: absolute; right: 18px; top: 12px; background: transparent; border: none; color: #fff; font-size: 18px; cursor: pointer; }
+    #ns-modal form { display:flex; gap:8px; align-items:center; }
+    #ns-modal input[type="email"] { flex:1; padding:8px; border-radius:4px; border:1px solid #444; background:#111; color:#fff; }
+    #ns-modal button.ns-submit { background:#32CD32; color:#000; border:none; padding:8px 12px; border-radius:4px; cursor:pointer; font-weight:bold; }
+    #ns-msg { margin-top:10px; font-size:13px; }
+    </style>
     <title>bUrY_+sUrF</title>
     <link rel="icon" type="image/x-icon" href="css/img/favicon.png">
 </head>
@@ -132,6 +143,20 @@ foreach ($spots as $spot):
             <p>Copyright &copy; 2026 <span style="color:#00FF00;">bUrY_+sUrF</span>. Todos os direitos reservados.</p>
         </div>
     </footer>
+
+    <!-- Newsletter modal -->
+    <div id="ns-overlay" aria-hidden="true">
+        <div id="ns-modal" role="dialog" aria-modal="true">
+            <button class="ns-close" aria-label="Fechar">&times;</button>
+            <h3>Receba fotos do dia</h3>
+            <p>Assine nossa newsletter para receber um aviso quando as fotos do dia forem publicadas.</p>
+            <form id="ns-form">
+                <input type="email" name="email" id="ns-email" placeholder="seu@email.com" required />
+                <button type="submit" class="ns-submit">OK</button>
+            </form>
+            <div id="ns-msg" role="status"></div>
+        </div>
+    </div>
     <script type="text/javascript" src="./js/BurySurfDB.js"></script>
     <script type="text/javascript" src="./js/main.js"></script>
     <script>
@@ -188,6 +213,51 @@ foreach ($spots as $spot):
             });
         });
     });
+    </script>
+    <script>
+    // Newsletter modal logic
+    (function(){
+        const overlay = document.getElementById('ns-overlay');
+        const closeBtn = document.querySelector('#ns-modal .ns-close');
+        const form = document.getElementById('ns-form');
+        const emailInput = document.getElementById('ns-email');
+        const msg = document.getElementById('ns-msg');
+
+        function showModal(){
+            if (localStorage.getItem('ns_closed')) return;
+            overlay.style.display = 'flex';
+            overlay.setAttribute('aria-hidden','false');
+        }
+        function hideModal(){
+            overlay.style.display = 'none';
+            overlay.setAttribute('aria-hidden','true');
+            localStorage.setItem('ns_closed','1');
+        }
+
+        closeBtn.addEventListener('click', hideModal);
+        overlay.addEventListener('click', function(e){ if (e.target === overlay) hideModal(); });
+
+        form.addEventListener('submit', async function(e){
+            e.preventDefault();
+            msg.textContent = 'Enviando...';
+            const fd = new FormData(); fd.append('email', emailInput.value.trim());
+            try {
+                const res = await fetch('./api/newsletter_subscribe.php', { method: 'POST', body: fd });
+                const j = await res.json();
+                if (j && j.success) {
+                    msg.textContent = 'Obrigado — verifique seu e-mail.';
+                    setTimeout(hideModal, 1200);
+                } else {
+                    msg.textContent = 'Erro: ' + (j.error || 'Falha ao assinar');
+                }
+            } catch (err) {
+                msg.textContent = 'Erro de rede';
+            }
+        });
+
+        // show modal on first load
+        document.addEventListener('DOMContentLoaded', function(){ setTimeout(showModal, 800); });
+    })();
     </script>
 </body>
 </html>
