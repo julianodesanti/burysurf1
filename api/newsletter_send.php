@@ -1,11 +1,15 @@
 <?php
+// Desabilitar exibição de erros direto na saída
+ini_set('display_errors', 0);
+error_reporting(E_ALL);
+
 ob_start();
 header('Content-Type: application/json; charset=utf-8');
 
 require_once __DIR__ . '/check_auth.php';
 require_once __DIR__ . '/db_config.php';
 
-// ensure table exists
+// garantir que não haja saída extra
 $tableSql = "CREATE TABLE IF NOT EXISTS newsletter_subscribers (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) NOT NULL UNIQUE,
@@ -45,7 +49,13 @@ if ($res) {
 }
 
 ob_end_clean();
-echo json_encode(['success' => true, 'sent' => $sent, 'failed' => $failed]);
+
+// garantir JSON válido SEM espaços extras
+echo json_encode([
+    'success' => true,
+    'sent' => $sent,
+    'failed' => $failed
+], JSON_UNESCAPED_UNICODE);
 
 $conn->close();
 exit;
