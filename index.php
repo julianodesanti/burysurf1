@@ -143,8 +143,8 @@ foreach ($spots as $spot):
             <p>Copyright &copy; 2026 <span style="color:#00FF00;">bUrY_+sUrF</span>. Todos os direitos reservados.</p>
         </div>
     </footer>
-
-    <!-- Newsletter modal -->
+<!--
+     Newsletter modal 
     <div id="ns-overlay" aria-hidden="true">
         <div id="ns-modal" role="dialog" aria-modal="true">
             <button class="ns-close" aria-label="Fechar">&times;</button>
@@ -157,6 +157,7 @@ foreach ($spots as $spot):
             <div id="ns-msg" role="status"></div>
         </div>
     </div>
+-->
     <script type="text/javascript" src="./js/BurySurfDB.js"></script>
     <script type="text/javascript" src="./js/main.js"></script>
     <script>
