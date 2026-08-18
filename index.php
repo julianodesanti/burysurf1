@@ -138,6 +138,20 @@ foreach ($spots as $spot):
 <?php endforeach; ?>
         </div>
     </main>
+    
+    <!-- Newsletter Modal -->
+    <div id="ns-overlay" aria-hidden="true">
+        <div id="ns-modal">
+            <button class="ns-close" aria-label="Fechar">&times;</button>
+            <h3>Newsletter</h3>
+            <form id="ns-form">
+                <input type="email" id="ns-email" placeholder="seu@email.com" required />
+                <button type="submit" class="ns-submit">Inscrever</button>
+            </form>
+            <div id="ns-msg"></div>
+        </div>
+    </div>
+
     <footer>
         <div id="copyright">
             <p>Copyright &copy; 2026 <span style="color:#00FF00;">bUrY_+sUrF</span>. Todos os direitos reservados.</p>

@@ -125,10 +125,12 @@ $sql = "SELECT ss.spot_id as id, ss.spot_name as name, ss.image, sc.wave_size, s
         <div class="blog-form" style="margin-top:18px;">
             <h3>Enviar newsletter</h3>
             <p>Envie um aviso simples por e-mail para todos os inscritos quando as fotos do dia estiverem prontas.</p>
-            <label>Assunto
+            <label>
+                Assunto
                 <input type="text" id="newsletter-subject" value="Novas fotos do dia no bUrY_+sUrF" />
             </label>
-            <label>Mensagem (texto simples)
+            <label>
+                Mensagem (texto simples)
                 <textarea id="newsletter-body">Há novas fotos do dia no site. Visite para ver as atualizações.</textarea>
             </label>
             <div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
