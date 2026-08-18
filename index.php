@@ -225,14 +225,12 @@ foreach ($spots as $spot):
         const msg = document.getElementById('ns-msg');
 
         function showModal(){
-            if (localStorage.getItem('ns_closed')) return;
             overlay.style.display = 'flex';
             overlay.setAttribute('aria-hidden','false');
         }
         function hideModal(){
             overlay.style.display = 'none';
             overlay.setAttribute('aria-hidden','true');
-            localStorage.setItem('ns_closed','1');
         }
 
         closeBtn.addEventListener('click', hideModal);
