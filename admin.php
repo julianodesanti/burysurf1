@@ -283,7 +283,18 @@ $sql = "SELECT ss.spot_id as id, ss.spot_name as name, ss.image, sc.wave_size, s
                         body: params.toString(),
                         credentials: 'same-origin'
                     });
-                    const j = await res.json();
+                    
+                    const text = await res.text();
+                    let j;
+                    try {
+                        j = JSON.parse(text);
+                    } catch (e) {
+                        console.error('JSON Parse Error:', e, 'Response:', text);
+                        sendStatus.textContent = 'Erro: Resposta inválida do servidor';
+                        sendStatus.className = 'upload-status status-error';
+                        return;
+                    }
+                    
                     if (j && j.success) {
                         sendStatus.textContent = `Enviado: ${j.sent}, Falhas: ${j.failed}`;
                         sendStatus.className = 'upload-status status-ok';
