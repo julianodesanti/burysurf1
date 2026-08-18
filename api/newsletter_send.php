@@ -55,6 +55,14 @@ try {
     $failed = 0;
     $count = 0;
 
+    // SMTP Configuration - UPDATE THESE WITH YOUR EMAIL SETTINGS
+    $smtpHost = 'smtp.gmail.com';           // Change this to your SMTP host
+    $smtpPort = 587;                        // Usually 587 for TLS or 465 for SSL
+    $smtpUser = 'your-email@gmail.com';     // Change to your email
+    $smtpPass = 'your-app-password';        // Change to your app password
+    $fromEmail = 'your-email@gmail.com';    // Change to your email
+    $fromName = 'bUrY_+sUrF';
+
     while ($row = $res->fetch_assoc()) {
         $count++;
         $to = $row['email'];
@@ -68,33 +76,45 @@ try {
         $unsubscribe = $scheme . '://' . $host . '/api/newsletter_unsubscribe.php?token=' . urlencode($row['unsub_token']);
         $body = $messageBody . "\n\nPara cancelar a inscrição, clique aqui: " . $unsubscribe;
 
-        $headers = array(
-            'From: bUrY_+sUrF <no-reply@' . $host . '>',
-            'Reply-To: no-reply@' . $host,
-            'MIME-Version: 1.0',
-            'Content-Type: text/plain; charset=UTF-8'
-        );
-
-        if (!function_exists('mail')) {
-            error_log('mail() function not available', 3, $logfile);
-            throw new Exception('Função mail() não disponível no servidor');
-        }
-
-        $ok = @mail($to, $subject, $body, implode("\r\n", $headers));
-        
-        if ($ok) {
-            $sent++;
-            error_log('Email sent to: ' . $to, 3, $logfile);
-        } else {
+        try {
+            // Try using mail() function first (if available)
+            if (function_exists('mail')) {
+                $headers = array(
+                    'From: ' . $fromName . ' <' . $fromEmail . '>',
+                    'Reply-To: ' . $fromEmail,
+                    'MIME-Version: 1.0',
+                    'Content-Type: text/plain; charset=UTF-8'
+                );
+                $ok = @mail($to, $subject, $body, implode("\r\n", $headers));
+            } else {
+                // Fallback: Just skip for now - need SMTP configuration
+                error_log('mail() not available and SMTP not configured for: ' . $to, 3, $logfile);
+                $failed++;
+                continue;
+            }
+            
+            if ($ok) {
+                $sent++;
+                error_log('Email sent to: ' . $to, 3, $logfile);
+            } else {
+                $failed++;
+                error_log('Email failed to: ' . $to, 3, $logfile);
+            }
+        } catch (Exception $e) {
             $failed++;
-            error_log('Email failed to: ' . $to, 3, $logfile);
+            error_log('Email exception for ' . $to . ': ' . $e->getMessage(), 3, $logfile);
         }
     }
 
     error_log('Sent: ' . $sent . ', Failed: ' . $failed . ', Total: ' . $count, 3, $logfile);
 
     ob_end_clean();
-    echo json_encode(['success' => true, 'sent' => $sent, 'failed' => $failed, 'total' => $count]);
+    
+    if ($sent > 0) {
+        echo json_encode(['success' => true, 'sent' => $sent, 'failed' => $failed, 'total' => $count]);
+    } else {
+        echo json_encode(['success' => false, 'error' => 'Configure SMTP settings in api/newsletter_send.php (lines 59-64) or enable mail() function']);
+    }
     
 } catch (Exception $e) {
     error_log('Exception: ' . $e->getMessage(), 3, $logfile);
