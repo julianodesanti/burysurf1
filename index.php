@@ -143,21 +143,7 @@ foreach ($spots as $spot):
             <p>Copyright &copy; 2026 <span style="color:#00FF00;">bUrY_+sUrF</span>. Todos os direitos reservados.</p>
         </div>
     </footer>
-<!--
-     Newsletter modal 
-    <div id="ns-overlay" aria-hidden="true">
-        <div id="ns-modal" role="dialog" aria-modal="true">
-            <button class="ns-close" aria-label="Fechar">&times;</button>
-            <h3>Receba fotos do dia</h3>
-            <p>Assine nossa newsletter para receber um aviso quando as fotos do dia forem publicadas.</p>
-            <form id="ns-form">
-                <input type="email" name="email" id="ns-email" placeholder="seu@email.com" required />
-                <button type="submit" class="ns-submit">OK</button>
-            </form>
-            <div id="ns-msg" role="status"></div>
-        </div>
-    </div>
-                    -->
+
     <script type="text/javascript" src="./js/BurySurfDB.js"></script>
     <script type="text/javascript" src="./js/main.js"></script>
     <script>
