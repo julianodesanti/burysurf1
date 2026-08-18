@@ -1,29 +1,150 @@
 <?php
-// Set up error handling first
+// Absolutely first thing - write to log
+$logfile = __DIR__ . '/newsletter_send.log';
+file_put_contents($logfile, "\n=== START " . date('Y-m-d H:i:s') . " ===\n", FILE_APPEND);
+
 error_reporting(E_ALL);
 ini_set('display_errors', '0');
-ini_set('log_errors', '1');
-
-ob_start();
-
-$logfile = __DIR__ . '/newsletter_send.log';
-
-// Custom error handler to log errors
-set_error_handler(function($errno, $errstr, $errfile, $errline) {
-    error_log('PHP Error (' . $errno . '): ' . $errstr . ' in ' . $errfile . ':' . $errline, 3, $logfile);
-    return true;
-});
 
 try {
+    file_put_contents($logfile, "1. Starting script\n", FILE_APPEND);
+    
+    ob_start();
     header('Content-Type: application/json; charset=utf-8');
     
-    error_log('=== Newsletter send started ===', 3, $logfile);
+    file_put_contents($logfile, "2. Headers set\n", FILE_APPEND);
     
     require_once __DIR__ . '/check_auth.php';
-    error_log('check_auth.php loaded', 3, $logfile);
+    file_put_contents($logfile, "3. check_auth loaded\n", FILE_APPEND);
     
     require_once __DIR__ . '/db_config.php';
-    error_log('db_config.php loaded', 3, $logfile);
+    file_put_contents($logfile, "4. db_config loaded\n", FILE_APPEND);
+
+    // Verify connection
+    if (!$conn) {
+        throw new Exception('Database connection failed');
+    }
+
+    file_put_contents($logfile, "5. Database connected\n", FILE_APPEND);
+
+    // ensure table exists
+    $tableSql = "CREATE TABLE IF NOT EXISTS newsletter_subscribers (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        email VARCHAR(255) NOT NULL UNIQUE,
+        unsub_token VARCHAR(128) NOT NULL,
+        active TINYINT(1) NOT NULL DEFAULT 1,
+        created_at DATETIME NOT NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
+    
+    if (!$conn->query($tableSql)) {
+        throw new Exception('Failed to create table: ' . $conn->error);
+    }
+
+    file_put_contents($logfile, "6. Table verified\n", FILE_APPEND);
+
+    $subject = isset($_POST['subject']) ? trim($_POST['subject']) : 'Novas fotos do dia no bUrY_+sUrF';
+    $messageBody = isset($_POST['body']) ? trim($_POST['body']) : "Há novas fotos do dia no site. Visite para ver as atualizações.";
+
+    if (empty($subject) || empty($messageBody)) {
+        throw new Exception('Assunto e mensagem são obrigatórios');
+    }
+
+    file_put_contents($logfile, "7. Subject: " . $subject . "\n", FILE_APPEND);
+
+    $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+    $host = $_SERVER['HTTP_HOST'];
+
+    $res = $conn->query('SELECT email, unsub_token FROM newsletter_subscribers WHERE active = 1');
+    
+    if (!$res) {
+        throw new Exception('Database query failed: ' . $conn->error);
+    }
+
+    $sent = 0;
+    $failed = 0;
+    $count = 0;
+
+    file_put_contents($logfile, "8. About to process emails\n", FILE_APPEND);
+
+    while ($row = $res->fetch_assoc()) {
+        $count++;
+        $to = $row['email'];
+        
+        if (!filter_var($to, FILTER_VALIDATE_EMAIL)) {
+            $failed++;
+            file_put_contents($logfile, "   Invalid email: " . $to . "\n", FILE_APPEND);
+            continue;
+        }
+        
+        file_put_contents($logfile, "   Processing: " . $to . "\n", FILE_APPEND);
+        
+        $unsubscribe = $scheme . '://' . $host . '/api/newsletter_unsubscribe.php?token=' . urlencode($row['unsub_token']);
+        $body = $messageBody . "\n\nPara cancelar a inscrição, clique aqui: " . $unsubscribe;
+
+        // Try PHPMailer
+        try {
+            $phpMailerPath = __DIR__ . '/PHPMailer-master/src/PHPMailer.php';
+            
+            if (!file_exists($phpMailerPath)) {
+                file_put_contents($logfile, "   PHPMailer not found at: " . $phpMailerPath . "\n", FILE_APPEND);
+                $failed++;
+                continue;
+            }
+
+            require_once $phpMailerPath;
+            require_once __DIR__ . '/PHPMailer-master/src/SMTP.php';
+            require_once __DIR__ . '/PHPMailer-master/src/Exception.php';
+            
+            file_put_contents($logfile, "   PHPMailer loaded\n", FILE_APPEND);
+
+            $mail = new \PHPMailer\PHPMailer\PHPMailer(true);
+            
+            $mail->isSMTP();
+            $mail->Host = 'email-ssl.com.br';
+            $mail->Port = 465;
+            $mail->SMTPSecure = \PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_IMPLICIT;
+            $mail->SMTPAuth = true;
+            $mail->Username = 'publicidade@burysurf.com';
+            $mail->Password = 'Afelicidadesoexistequandocompartilhada!10';
+            $mail->CharSet = 'UTF-8';
+            
+            $mail->setFrom('publicidade@burysurf.com', 'bUrY_+sUrF');
+            $mail->addAddress($to);
+            $mail->Subject = $subject;
+            $mail->Body = $body;
+            $mail->isHTML(false);
+            
+            if ($mail->send()) {
+                $sent++;
+                file_put_contents($logfile, "   ✓ Sent to: " . $to . "\n", FILE_APPEND);
+            } else {
+                $failed++;
+                file_put_contents($logfile, "   ✗ Failed to: " . $to . " - " . $mail->ErrorInfo . "\n", FILE_APPEND);
+            }
+        } catch (Exception $e) {
+            $failed++;
+            file_put_contents($logfile, "   Exception for " . $to . ": " . $e->getMessage() . "\n", FILE_APPEND);
+        }
+    }
+
+    file_put_contents($logfile, "9. Completed - Sent: " . $sent . ", Failed: " . $failed . ", Total: " . $count . "\n", FILE_APPEND);
+
+    ob_end_clean();
+    echo json_encode(['success' => true, 'sent' => $sent, 'failed' => $failed, 'total' => $count]);
+    
+} catch (Exception $e) {
+    file_put_contents($logfile, "ERROR: " . $e->getMessage() . "\n", FILE_APPEND);
+    
+    ob_end_clean();
+    http_response_code(500);
+    echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+}
+
+if (isset($conn)) {
+    $conn->close();
+}
+file_put_contents($logfile, "=== END ===\n", FILE_APPEND);
+exit;
 
     // Verify connection
     if (!$conn) {
