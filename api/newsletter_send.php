@@ -82,7 +82,7 @@ try {
             $mail->SMTPAuth = true;
             $mail->Username = $smtp_user;
             $mail->Password = $smtp_pass;
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_IMPLICIT;
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
             $mail->Port = $smtp_port;
             $mail->SMTPOptions = array(
                 'ssl' => array(
