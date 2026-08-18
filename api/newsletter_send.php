@@ -1,15 +1,29 @@
 <?php
+// Set up error handling first
+error_reporting(E_ALL);
+ini_set('display_errors', '0');
+ini_set('log_errors', '1');
+
 ob_start();
 
 $logfile = __DIR__ . '/newsletter_send.log';
 
+// Custom error handler to log errors
+set_error_handler(function($errno, $errstr, $errfile, $errline) {
+    error_log('PHP Error (' . $errno . '): ' . $errstr . ' in ' . $errfile . ':' . $errline, 3, $logfile);
+    return true;
+});
+
 try {
     header('Content-Type: application/json; charset=utf-8');
     
+    error_log('=== Newsletter send started ===', 3, $logfile);
+    
     require_once __DIR__ . '/check_auth.php';
+    error_log('check_auth.php loaded', 3, $logfile);
+    
     require_once __DIR__ . '/db_config.php';
-
-    error_log('Newsletter send started', 3, $logfile);
+    error_log('db_config.php loaded', 3, $logfile);
 
     // Verify connection
     if (!$conn) {
@@ -68,15 +82,31 @@ try {
     $smtpPath = __DIR__ . '/PHPMailer-master/src/SMTP.php';
     $exceptionPath = __DIR__ . '/PHPMailer-master/src/Exception.php';
     
-    if (!file_exists($phpMailerPath) || !file_exists($smtpPath) || !file_exists($exceptionPath)) {
-        throw new Exception('PHPMailer library not found. Required files: ' . $phpMailerPath . ', ' . $smtpPath . ', ' . $exceptionPath);
+    error_log('Checking PHPMailer files:', 3, $logfile);
+    error_log('  PHPMailer: ' . (file_exists($phpMailerPath) ? 'OK' : 'NOT FOUND'), 3, $logfile);
+    error_log('  SMTP: ' . (file_exists($smtpPath) ? 'OK' : 'NOT FOUND'), 3, $logfile);
+    error_log('  Exception: ' . (file_exists($exceptionPath) ? 'OK' : 'NOT FOUND'), 3, $logfile);
+    
+    if (!file_exists($phpMailerPath)) {
+        throw new Exception('PHPMailer.php not found at: ' . $phpMailerPath);
+    }
+    if (!file_exists($smtpPath)) {
+        throw new Exception('SMTP.php not found at: ' . $smtpPath);
+    }
+    if (!file_exists($exceptionPath)) {
+        throw new Exception('Exception.php not found at: ' . $exceptionPath);
     }
 
     require_once $phpMailerPath;
+    error_log('PHPMailer.php loaded', 3, $logfile);
+    
     require_once $smtpPath;
+    error_log('SMTP.php loaded', 3, $logfile);
+    
     require_once $exceptionPath;
+    error_log('Exception.php loaded', 3, $logfile);
 
-    error_log('PHPMailer loaded successfully', 3, $logfile);
+    error_log('All PHPMailer files loaded successfully', 3, $logfile);
 
     while ($row = $res->fetch_assoc()) {
         $count++;
@@ -139,13 +169,24 @@ try {
     echo json_encode(['success' => true, 'sent' => $sent, 'failed' => $failed, 'total' => $count]);
     
 } catch (Exception $e) {
-    error_log('Exception: ' . $e->getMessage(), 3, $logfile);
-    error_log('Trace: ' . $e->getTraceAsString(), 3, $logfile);
+    error_log('Exception caught: ' . $e->getMessage(), 3, $logfile);
+    error_log('Stack trace: ' . $e->getTraceAsString(), 3, $logfile);
     
     ob_end_clean();
     http_response_code(500);
     echo json_encode(['success' => false, 'error' => $e->getMessage()]);
 }
+
+// Handle any remaining fatal errors
+register_shutdown_function(function() use ($logfile) {
+    $error = error_get_last();
+    if ($error !== null && ($error['type'] === E_ERROR || $error['type'] === E_PARSE || $error['type'] === E_CORE_ERROR || $error['type'] === E_COMPILE_ERROR)) {
+        error_log('Fatal error: ' . $error['message'] . ' in ' . $error['file'] . ':' . $error['line'], 3, $logfile);
+        ob_end_clean();
+        http_response_code(500);
+        echo json_encode(['success' => false, 'error' => $error['message']]);
+    }
+});
 
 if (isset($conn)) {
     $conn->close();
