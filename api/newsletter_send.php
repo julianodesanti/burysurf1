@@ -57,7 +57,7 @@ try {
 
     // SMTP Configuration - UPDATE THESE WITH YOUR EMAIL SETTINGS
     $smtpHost = 'email-ssl.com.br';           // Change this to your SMTP host
-    $smtpPort = 587;                        // Usually 587 for TLS or 465 for SSL
+    $smtpPort = 465;                        // Usually 587 for TLS or 465 for SSL
     $smtpUser = 'publicidade@burysurf.com';     // Change to your email
     $smtpPass = 'Afelicidadesoexistequandocompartilhada!10';        // Change to your app password
     $fromEmail = 'publicidade@burysurf.com';    // Change to your email
