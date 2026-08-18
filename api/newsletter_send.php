@@ -56,11 +56,11 @@ try {
     $count = 0;
 
     // SMTP Configuration - UPDATE THESE WITH YOUR EMAIL SETTINGS
-    $smtpHost = 'smtp.gmail.com';           // Change this to your SMTP host
+    $smtpHost = 'email-ssl.com.br';           // Change this to your SMTP host
     $smtpPort = 587;                        // Usually 587 for TLS or 465 for SSL
-    $smtpUser = 'your-email@gmail.com';     // Change to your email
-    $smtpPass = 'your-app-password';        // Change to your app password
-    $fromEmail = 'your-email@gmail.com';    // Change to your email
+    $smtpUser = 'publicidade@burysurf.com';     // Change to your email
+    $smtpPass = 'Afelicidadesoexistequandocompartilhada!10';        // Change to your app password
+    $fromEmail = 'publicidade@burysurf.com';    // Change to your email
     $fromName = 'bUrY_+sUrF';
 
     while ($row = $res->fetch_assoc()) {
