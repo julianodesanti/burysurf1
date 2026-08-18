@@ -1,16 +1,22 @@
 <?php
 ob_start();
 
+$logfile = __DIR__ . '/newsletter_send.log';
+
 try {
     header('Content-Type: application/json; charset=utf-8');
     
     require_once __DIR__ . '/check_auth.php';
     require_once __DIR__ . '/db_config.php';
 
+    error_log('Newsletter send started', 3, $logfile);
+
     // Verify connection
     if (!$conn) {
         throw new Exception('Database connection failed');
     }
+
+    error_log('Database connected', 3, $logfile);
 
     // ensure table exists
     $tableSql = "CREATE TABLE IF NOT EXISTS newsletter_subscribers (
@@ -25,12 +31,16 @@ try {
         throw new Exception('Failed to create table: ' . $conn->error);
     }
 
+    error_log('Table verified', 3, $logfile);
+
     $subject = isset($_POST['subject']) ? trim($_POST['subject']) : 'Novas fotos do dia no bUrY_+sUrF';
     $messageBody = isset($_POST['body']) ? trim($_POST['body']) : "Há novas fotos do dia no site. Visite para ver as atualizações.";
 
     if (empty($subject) || empty($messageBody)) {
         throw new Exception('Assunto e mensagem são obrigatórios');
     }
+
+    error_log('Subject: ' . $subject, 3, $logfile);
 
     $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
     $host = $_SERVER['HTTP_HOST'];
@@ -48,8 +58,10 @@ try {
     while ($row = $res->fetch_assoc()) {
         $count++;
         $to = $row['email'];
+        
         if (!filter_var($to, FILTER_VALIDATE_EMAIL)) {
             $failed++;
+            error_log('Invalid email: ' . $to, 3, $logfile);
             continue;
         }
         
@@ -63,21 +75,34 @@ try {
             'Content-Type: text/plain; charset=UTF-8'
         );
 
+        if (!function_exists('mail')) {
+            error_log('mail() function not available', 3, $logfile);
+            throw new Exception('Função mail() não disponível no servidor');
+        }
+
         $ok = @mail($to, $subject, $body, implode("\r\n", $headers));
+        
         if ($ok) {
             $sent++;
+            error_log('Email sent to: ' . $to, 3, $logfile);
         } else {
             $failed++;
+            error_log('Email failed to: ' . $to, 3, $logfile);
         }
     }
+
+    error_log('Sent: ' . $sent . ', Failed: ' . $failed . ', Total: ' . $count, 3, $logfile);
 
     ob_end_clean();
     echo json_encode(['success' => true, 'sent' => $sent, 'failed' => $failed, 'total' => $count]);
     
 } catch (Exception $e) {
+    error_log('Exception: ' . $e->getMessage(), 3, $logfile);
+    error_log('Trace: ' . $e->getTraceAsString(), 3, $logfile);
+    
     ob_end_clean();
     http_response_code(500);
-    echo json_encode(['success' => false, 'error' => $e->getMessage(), 'debug' => gettype($conn)]);
+    echo json_encode(['success' => false, 'error' => $e->getMessage()]);
 }
 
 if (isset($conn)) {
