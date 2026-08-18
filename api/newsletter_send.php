@@ -1,4 +1,7 @@
 <?php
+use PHPMailer\PHPMailer\Exception as MailException;
+use PHPMailer\PHPMailer\PHPMailer;
+
 // Newsletter sender using PHPMailer + SMTP
 $logfile = __DIR__ . '/newsletter_send.log';
 
@@ -14,9 +17,6 @@ try {
     require_once __DIR__ . '/PHPMailer-master/src/Exception.php';
     require_once __DIR__ . '/PHPMailer-master/src/PHPMailer.php';
     require_once __DIR__ . '/PHPMailer-master/src/SMTP.php';
-    
-    use PHPMailer\PHPMailer\PHPMailer;
-    use PHPMailer\PHPMailer\Exception as MailException;
     
     @file_put_contents($logfile, "[" . date('Y-m-d H:i:s') . "] PHPMailer classes loaded\n", FILE_APPEND);
     
@@ -92,7 +92,7 @@ try {
                 )
             );
             $mail->Timeout = 10;
-            $mail->SMTPDebug = 2;
+            $mail->SMTPDebug = 0;
             
             // Message
             $mail->setFrom($from_email, $from_name);
