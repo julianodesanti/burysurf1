@@ -271,12 +271,21 @@ $sql = "SELECT ss.spot_id as id, ss.spot_name as name, ss.image, sc.wave_size, s
                 if (!confirm('Enviar newsletter para todos os inscritos agora?')) return;
                 const subject = document.getElementById('newsletter-subject').value || '';
                 const body = document.getElementById('newsletter-body').value || '';
+                
+                if (!subject.trim() || !body.trim()) {
+                    sendStatus.textContent = 'Erro: Assunto e mensagem são obrigatórios';
+                    sendStatus.className = 'upload-status status-error';
+                    return;
+                }
+                
                 sendStatus.textContent = 'Enviando...';
                 sendStatus.className = 'upload-status';
+                
                 try {
                     const params = new URLSearchParams();
                     params.append('subject', subject);
                     params.append('body', body);
+                    
                     const res = await fetch('./api/newsletter_send.php', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -284,26 +293,36 @@ $sql = "SELECT ss.spot_id as id, ss.spot_name as name, ss.image, sc.wave_size, s
                         credentials: 'same-origin'
                     });
                     
+                    if (!res.ok) {
+                        throw new Error(`HTTP error! status: ${res.status}`);
+                    }
+                    
                     const text = await res.text();
+                    console.log('Response text:', text);
+                    
+                    if (!text || text.trim() === '') {
+                        throw new Error('Servidor retornou resposta vazia');
+                    }
+                    
                     let j;
                     try {
                         j = JSON.parse(text);
                     } catch (e) {
-                        console.error('JSON Parse Error:', e, 'Response:', text);
-                        sendStatus.textContent = 'Erro: Resposta inválida do servidor';
-                        sendStatus.className = 'upload-status status-error';
-                        return;
+                        console.error('JSON Parse Error:', e);
+                        console.error('Response was:', text);
+                        throw new Error('Resposta inválida do servidor: ' + text.substring(0, 100));
                     }
                     
                     if (j && j.success) {
-                        sendStatus.textContent = `Enviado: ${j.sent}, Falhas: ${j.failed}`;
+                        sendStatus.textContent = `✓ Enviado: ${j.sent}, Falhas: ${j.failed}`;
                         sendStatus.className = 'upload-status status-ok';
                     } else {
                         sendStatus.textContent = 'Erro: ' + (j.error || 'Falha no envio');
                         sendStatus.className = 'upload-status status-error';
                     }
                 } catch (err) {
-                    sendStatus.textContent = 'Erro de rede: ' + err.message;
+                    console.error('Error:', err);
+                    sendStatus.textContent = 'Erro: ' + err.message;
                     sendStatus.className = 'upload-status status-error';
                 }
             });
