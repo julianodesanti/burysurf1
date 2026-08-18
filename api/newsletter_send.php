@@ -63,6 +63,21 @@ try {
     $fromEmail = 'publicidade@burysurf.com';    // Change to your email
     $fromName = 'bUrY_+sUrF';
 
+    // Load PHPMailer
+    $phpMailerPath = __DIR__ . '/PHPMailer-master/src/PHPMailer.php';
+    $smtpPath = __DIR__ . '/PHPMailer-master/src/SMTP.php';
+    $exceptionPath = __DIR__ . '/PHPMailer-master/src/Exception.php';
+    
+    if (!file_exists($phpMailerPath) || !file_exists($smtpPath) || !file_exists($exceptionPath)) {
+        throw new Exception('PHPMailer library not found. Required files: ' . $phpMailerPath . ', ' . $smtpPath . ', ' . $exceptionPath);
+    }
+
+    require_once $phpMailerPath;
+    require_once $smtpPath;
+    require_once $exceptionPath;
+
+    error_log('PHPMailer loaded successfully', 3, $logfile);
+
     while ($row = $res->fetch_assoc()) {
         $count++;
         $to = $row['email'];
@@ -77,32 +92,43 @@ try {
         $body = $messageBody . "\n\nPara cancelar a inscrição, clique aqui: " . $unsubscribe;
 
         try {
-            // Try using mail() function first (if available)
-            if (function_exists('mail')) {
-                $headers = array(
-                    'From: ' . $fromName . ' <' . $fromEmail . '>',
-                    'Reply-To: ' . $fromEmail,
-                    'MIME-Version: 1.0',
-                    'Content-Type: text/plain; charset=UTF-8'
-                );
-                $ok = @mail($to, $subject, $body, implode("\r\n", $headers));
-            } else {
-                // Fallback: Just skip for now - need SMTP configuration
-                error_log('mail() not available and SMTP not configured for: ' . $to, 3, $logfile);
-                $failed++;
-                continue;
-            }
+            $mail = new \PHPMailer\PHPMailer\PHPMailer(true);
             
-            if ($ok) {
+            // SMTP settings
+            $mail->isSMTP();
+            $mail->Host = $smtpHost;
+            $mail->Port = $smtpPort;
+            $mail->SMTPSecure = \PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_IMPLICIT;
+            $mail->SMTPAuth = true;
+            $mail->Username = $smtpUser;
+            $mail->Password = $smtpPass;
+            
+            // Set charset
+            $mail->CharSet = 'UTF-8';
+            
+            // Set from and to
+            $mail->setFrom($fromEmail, $fromName);
+            $mail->addAddress($to);
+            
+            // Email content
+            $mail->Subject = $subject;
+            $mail->Body = $body;
+            $mail->isHTML(false);
+            
+            // Send
+            if ($mail->send()) {
                 $sent++;
-                error_log('Email sent to: ' . $to, 3, $logfile);
+                error_log('Email sent successfully to: ' . $to, 3, $logfile);
             } else {
                 $failed++;
-                error_log('Email failed to: ' . $to, 3, $logfile);
+                error_log('Email failed to send to: ' . $to . ' - ' . $mail->ErrorInfo, 3, $logfile);
             }
+        } catch (\PHPMailer\PHPMailer\Exception $e) {
+            $failed++;
+            error_log('PHPMailer Exception for ' . $to . ': ' . $e->getMessage(), 3, $logfile);
         } catch (Exception $e) {
             $failed++;
-            error_log('Email exception for ' . $to . ': ' . $e->getMessage(), 3, $logfile);
+            error_log('General Exception for ' . $to . ': ' . $e->getMessage(), 3, $logfile);
         }
     }
 
@@ -110,11 +136,7 @@ try {
 
     ob_end_clean();
     
-    if ($sent > 0) {
-        echo json_encode(['success' => true, 'sent' => $sent, 'failed' => $failed, 'total' => $count]);
-    } else {
-        echo json_encode(['success' => false, 'error' => 'Configure SMTP settings in api/newsletter_send.php (lines 59-64) or enable mail() function']);
-    }
+    echo json_encode(['success' => true, 'sent' => $sent, 'failed' => $failed, 'total' => $count]);
     
 } catch (Exception $e) {
     error_log('Exception: ' . $e->getMessage(), 3, $logfile);
