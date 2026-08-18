@@ -293,15 +293,12 @@ $sql = "SELECT ss.spot_id as id, ss.spot_name as name, ss.image, sc.wave_size, s
                         credentials: 'same-origin'
                     });
                     
-                    if (!res.ok) {
-                        throw new Error(`HTTP error! status: ${res.status}`);
-                    }
-                    
                     const text = await res.text();
+                    console.log('Response status:', res.status);
                     console.log('Response text:', text);
                     
                     if (!text || text.trim() === '') {
-                        throw new Error('Servidor retornou resposta vazia');
+                        throw new Error('Servidor retornou resposta vazia (status: ' + res.status + ')');
                     }
                     
                     let j;
@@ -317,7 +314,9 @@ $sql = "SELECT ss.spot_id as id, ss.spot_name as name, ss.image, sc.wave_size, s
                         sendStatus.textContent = `✓ Enviado: ${j.sent}, Falhas: ${j.failed}`;
                         sendStatus.className = 'upload-status status-ok';
                     } else {
-                        sendStatus.textContent = 'Erro: ' + (j.error || 'Falha no envio');
+                        const errorMsg = j.error || 'Falha desconhecida';
+                        console.error('Server returned error:', j);
+                        sendStatus.textContent = 'Erro: ' + errorMsg;
                         sendStatus.className = 'upload-status status-error';
                     }
                 } catch (err) {

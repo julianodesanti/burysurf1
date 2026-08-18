@@ -7,6 +7,11 @@ try {
     require_once __DIR__ . '/check_auth.php';
     require_once __DIR__ . '/db_config.php';
 
+    // Verify connection
+    if (!$conn) {
+        throw new Exception('Database connection failed');
+    }
+
     // ensure table exists
     $tableSql = "CREATE TABLE IF NOT EXISTS newsletter_subscribers (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -20,8 +25,8 @@ try {
         throw new Exception('Failed to create table: ' . $conn->error);
     }
 
-    $subject = trim($_POST['subject'] ?? 'Novas fotos do dia no bUrY_+sUrF');
-    $messageBody = trim($_POST['body'] ?? "Há novas fotos do dia no site. Visite para ver as atualizações.");
+    $subject = isset($_POST['subject']) ? trim($_POST['subject']) : 'Novas fotos do dia no bUrY_+sUrF';
+    $messageBody = isset($_POST['body']) ? trim($_POST['body']) : "Há novas fotos do dia no site. Visite para ver as atualizações.";
 
     if (empty($subject) || empty($messageBody)) {
         throw new Exception('Assunto e mensagem são obrigatórios');
@@ -38,21 +43,27 @@ try {
 
     $sent = 0;
     $failed = 0;
+    $count = 0;
 
     while ($row = $res->fetch_assoc()) {
+        $count++;
         $to = $row['email'];
+        if (!filter_var($to, FILTER_VALIDATE_EMAIL)) {
+            $failed++;
+            continue;
+        }
+        
         $unsubscribe = $scheme . '://' . $host . '/api/newsletter_unsubscribe.php?token=' . urlencode($row['unsub_token']);
-
         $body = $messageBody . "\n\nPara cancelar a inscrição, clique aqui: " . $unsubscribe;
 
-        $headers = [];
-        $fromAddr = 'no-reply@' . $host;
-        $headers[] = 'From: bUrY_+sUrF <' . $fromAddr . '>';
-        $headers[] = 'Reply-To: no-reply@' . $host;
-        $headers[] = 'MIME-Version: 1.0';
-        $headers[] = 'Content-Type: text/plain; charset=UTF-8';
+        $headers = array(
+            'From: bUrY_+sUrF <no-reply@' . $host . '>',
+            'Reply-To: no-reply@' . $host,
+            'MIME-Version: 1.0',
+            'Content-Type: text/plain; charset=UTF-8'
+        );
 
-        $ok = mail($to, $subject, $body, implode("\r\n", $headers));
+        $ok = @mail($to, $subject, $body, implode("\r\n", $headers));
         if ($ok) {
             $sent++;
         } else {
@@ -61,12 +72,12 @@ try {
     }
 
     ob_end_clean();
-    echo json_encode(['success' => true, 'sent' => $sent, 'failed' => $failed]);
+    echo json_encode(['success' => true, 'sent' => $sent, 'failed' => $failed, 'total' => $count]);
     
 } catch (Exception $e) {
     ob_end_clean();
     http_response_code(500);
-    echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+    echo json_encode(['success' => false, 'error' => $e->getMessage(), 'debug' => gettype($conn)]);
 }
 
 if (isset($conn)) {
