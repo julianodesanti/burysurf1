@@ -144,6 +144,7 @@ foreach ($spots as $spot):
         <div id="ns-modal">
             <button class="ns-close" aria-label="Fechar">&times;</button>
             <h3>Newsletter</h3>
+            <span>Assine para receber atualizações semanais sobre as condições das ondas.</span>
             <form id="ns-form">
                 <input type="email" id="ns-email" placeholder="seu@email.com" required />
                 <button type="submit" class="ns-submit">Inscrever</button>
