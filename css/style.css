@@ -6814,6 +6814,12 @@
 		color: #00FF00;
 	}
 
+	#ns-modal span {
+		margin: 0 0 8px 0;
+		font-family: papyrus, sans-serif;
+		color: #00FF00;
+	}
+
 	#ns-modal .ns-close {
 		position: absolute;
 		right: 18px;
@@ -6829,10 +6835,6 @@
 		display: flex;
 		gap: 8px;
 		align-items: center;
-	}
-
-	#ns-modal span {
-		padding: 18px;
 	}
 
 	#ns-modal input[type="email"] {
