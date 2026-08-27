@@ -44,7 +44,7 @@ $sql = "SELECT ss.spot_id as id, ss.spot_name as name, ss.image, sc.wave_size, s
         .nav { margin-bottom: 20px; }
         .nav a { color: #0066cc; text-decoration: none; font-size: 14px; }
         .nav a:hover { text-decoration: underline; }
-        .spot-card { border: 1px solid #ddd; padding: 16px; margin-bottom: 16px; border-radius: 4px; display: flex; align-items: center; gap: 16px; }
+        .spot-card { border: 1px solid #000; padding: 16px; margin-bottom: 16px; border-radius: 4px; display: flex; align-items: center; gap: 16px; }
         .spot-preview { width: 160px; height: 90px; background: #f0f0f0; border-radius: 4px; display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; }
         .spot-preview img { width: 100%; height: 100%; object-fit: cover; }
         .spot-info { flex: 1; }
@@ -71,7 +71,7 @@ $sql = "SELECT ss.spot_id as id, ss.spot_name as name, ss.image, sc.wave_size, s
 
         body { background: #000; color: #fff; }
         main { background: #000; }
-        .spot-card { border-color: #fff; }
+        .spot-card { border-color: #000; }
         .spot-preview { background: #000; }
         .condition-edit { background: #000 !important; border-top-color: #fff !important; }
         .blog-form { background: #000; border-color: #fff; }
