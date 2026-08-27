@@ -38,17 +38,6 @@ if ($sres = $conn->query($spotSql)) {
 		content="Weekly wave forecast & historical phenomenological record of the Balneário Camboriú coastline (blog & vlog)." />
     <meta property="og:locale" content="pt_BR" />
     <link rel="stylesheet" type="text/css" href="css/style.css"/>
-    <style>
-    /* Newsletter modal styles */
-    #ns-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 9999; }
-    #ns-modal { background: #0b0b0b; border: 2px solid #32CD32; color: #fff; padding: 18px; width: 320px; max-width: 90%; border-radius: 8px; font-family: 'Inconsolata', monospace; }
-    #ns-modal h3 { margin: 0 0 8px 0; font-family: papyrus, sans-serif; color: #00FF00; }
-    #ns-modal .ns-close { position: absolute; right: 18px; top: 12px; background: transparent; border: none; color: #fff; font-size: 18px; cursor: pointer; }
-    #ns-modal form { display:flex; gap:8px; align-items:center; }
-    #ns-modal input[type="email"] { flex:1; padding:8px; border-radius:4px; border:1px solid #444; background:#111; color:#fff; }
-    #ns-modal button.ns-submit { background:#32CD32; color:#000; border:none; padding:8px 12px; border-radius:4px; cursor:pointer; font-weight:bold; }
-    #ns-msg { margin-top:10px; font-size:13px; }
-    </style>
     <title>bUrY_+sUrF</title>
     <link rel="icon" type="image/x-icon" href="css/img/favicon.png">
 </head>
@@ -144,7 +133,7 @@ foreach ($spots as $spot):
         <div id="ns-modal">
             <button class="ns-close" aria-label="Fechar">&times;</button>
             <h3>Newsletter</h3>
-            <span>Assine para receber atualizações semanais sobre as condições das ondas.</span>
+            <h2>Assine para receber atualizações semanais sobre as condições das ondas.</h2>
             <form id="ns-form">
                 <input type="email" id="ns-email" placeholder="seu@email.com" required />
                 <button type="submit" class="ns-submit">Inscrever</button>

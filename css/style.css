@@ -6814,8 +6814,8 @@
 		color: #00FF00;
 	}
 
-	#ns-modal span {
-		padding: 50px;
+	#ns-modal h2 {
+		margin: 0 0 8px 0;
 		font-family: papyrus, sans-serif;
 		color: #FFFFFF;
 	}
