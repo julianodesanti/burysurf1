@@ -6815,9 +6815,9 @@
 	}
 
 	#ns-modal span {
-		margin: 0 0 8px 0;
+		padding: 50px;
 		font-family: papyrus, sans-serif;
-		color: #00FF00;
+		color: #FFFFFF;
 	}
 
 	#ns-modal .ns-close {
