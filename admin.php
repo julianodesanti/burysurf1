@@ -46,7 +46,7 @@ if ($tableCheck && $tableCheck->num_rows > 0) {
     <title>bUrY_+sUrF</title>
     <link rel="icon" type="image/x-icon" href="css/img/favicon.png">
     <style>
-        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+        body { font-family: Arial, sans-serif; background: #f5f5f5; }
         main { max-width: 900px; margin: 0 auto; background: white; padding: 20px; border-radius: 4px; }
         .nav { margin-bottom: 20px; }
         .nav a { color: #0066cc; text-decoration: none; font-size: 14px; }
