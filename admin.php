@@ -12,6 +12,13 @@ $spots = [];
 $sql = "SELECT ss.spot_id as id, ss.spot_name as name, ss.image, sc.wave_size, sc.wave_formation, sc.weather, sc.wind, sc.water_temperature FROM surf_spots ss LEFT JOIN surf_conditions sc ON ss.spot_id = sc.spot_id AND sc.condition_date = CURDATE() ORDER BY ss.spot_id";
     $res = $conn->query($sql);
         if ($res) {while ($r = $res->fetch_assoc()) $spots[] = $r;}
+$newsletter_subscribers = [];
+$tableCheck = $conn->query("SHOW TABLES LIKE 'newsletter_subscribers'");
+if ($tableCheck && $tableCheck->num_rows > 0) {
+    $subscriberSql = "SELECT email, created_at FROM newsletter_subscribers WHERE active = 1 ORDER BY created_at DESC";
+    $subscriberRes = $conn->query($subscriberSql);
+    if ($subscriberRes) {while ($subscriber = $subscriberRes->fetch_assoc()) $newsletter_subscribers[] = $subscriber;}
+}
 
 ?>
 <!DOCTYPE html>
@@ -79,6 +86,10 @@ $sql = "SELECT ss.spot_id as id, ss.spot_name as name, ss.image, sc.wave_size, s
         .admin-tabs { border-bottom-color: #fff; }
         .admin-tab { background: #000; color: #fff; border-color: #fff; }
         #send-newsletter-btn { color: #fff !important; }
+        .subscriber-count { margin: 0 0 14px; color: #fff; }
+        .subscriber-table { width: 100%; border-collapse: collapse; }
+        .subscriber-table th, .subscriber-table td { padding: 10px; border: 1px solid #fff; text-align: left; }
+        .subscriber-table th { background: #fff; color: #000; }
     </style>
 </head>
 <!-- Google tag (gtag.js) -->
@@ -101,6 +112,7 @@ $sql = "SELECT ss.spot_id as id, ss.spot_name as name, ss.image, sc.wave_size, s
             <button class="admin-tab active" type="button" role="tab" aria-selected="true" aria-controls="spots-tab" data-tab="spots-tab">Spots</button>
             <button class="admin-tab" type="button" role="tab" aria-selected="false" aria-controls="blog-tab" data-tab="blog-tab">Blog</button>
             <button class="admin-tab" type="button" role="tab" aria-selected="false" aria-controls="newsletter-tab" data-tab="newsletter-tab">Newsletter</button>
+            <button class="admin-tab" type="button" role="tab" aria-selected="false" aria-controls="subscribers-tab" data-tab="subscribers-tab">Inscritos</button>
         </div>
 
         <section id="spots-tab" class="tab-panel active" role="tabpanel">
@@ -183,6 +195,33 @@ $sql = "SELECT ss.spot_id as id, ss.spot_name as name, ss.image, sc.wave_size, s
                 <div class="upload-status" id="newsletter-send-status"></div>
             </div>
         </div>
+        </section>
+
+        <section id="subscribers-tab" class="tab-panel" role="tabpanel">
+            <div class="blog-form">
+                <h3>E-mails inscritos na newsletter</h3>
+                <p class="subscriber-count">Total de inscritos ativos: <?php echo count($newsletter_subscribers); ?></p>
+                <?php if (empty($newsletter_subscribers)): ?>
+                    <p>Nenhum e-mail cadastrado para receber a newsletter.</p>
+                <?php else: ?>
+                    <table class="subscriber-table">
+                        <thead>
+                            <tr>
+                                <th>E-mail</th>
+                                <th>Data do cadastro</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($newsletter_subscribers as $subscriber): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($subscriber['email'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                    <td><?php echo htmlspecialchars($subscriber['created_at'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php endif; ?>
+            </div>
         </section>
     </main>
     <footer>
