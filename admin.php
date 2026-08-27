@@ -17,10 +17,27 @@ $sql = "SELECT ss.spot_id as id, ss.spot_name as name, ss.image, sc.wave_size, s
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin - bUrY_+sUrF</title>
-    <link rel="stylesheet" href="./css/style.css" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <meta name="google-adsense-account" content="ca-pub-4006894197637352">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="copyright" content="© 2026 bUrY_+sUrF"/>
+    <meta name="author" content="Juliano Desanti Carvalho Dalmora"/>
+    <meta name="description"
+		content="Weekly wave forecast & historical phenomenological record of the Balneário Camboriú coastline (blog & vlog)." />
+	<meta name="keywords" content="sand, surf, beach, wave, waves, bc, balneário, camboriú, balneário camboriú" />
+	<meta property="og:title" content="bUrY_+sUrF" />
+	<meta property="og:type" content="website" />
+	<meta property="og:image" content="./css/img/bury_surf.jpg" />
+	<meta property="og:url" content="https://burysurf.com/vlog.html" />
+	<meta property="og:description"
+		content="Weekly wave forecast & historical phenomenological record of the Balneário Camboriú coastline (blog & vlog)." />
+    <meta property="og:locale" content="pt_BR" />
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <title>bUrY_+sUrF</title>
+    <link rel="icon" type="image/x-icon" href="css/img/favicon.png">
     <style>
         body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
         main { max-width: 900px; margin: 0 auto; background: white; padding: 20px; border-radius: 4px; }
@@ -51,6 +68,17 @@ $sql = "SELECT ss.spot_id as id, ss.spot_name as name, ss.image, sc.wave_size, s
         .admin-tab.active { background: #0066cc; border-color: #0066cc; color: white; }
         .tab-panel { display: none; }
         .tab-panel.active { display: block; }
+
+        body { background: #000; color: #fff; }
+        main { background: #000; }
+        .spot-card { border-color: #fff; }
+        .spot-preview { background: #000; }
+        .condition-edit { background: #000 !important; border-top-color: #fff !important; }
+        .blog-form { background: #000; border-color: #fff; }
+        .blog-form input[type="text"], .blog-form textarea, .blog-form input[type="file"] { background: #000; color: #fff; border-color: #fff; }
+        .admin-tabs { border-bottom-color: #fff; }
+        .admin-tab { background: #000; color: #fff; border-color: #fff; }
+        #send-newsletter-btn { color: #fff !important; }
     </style>
 </head>
 <!-- Google tag (gtag.js) -->
@@ -157,6 +185,11 @@ $sql = "SELECT ss.spot_id as id, ss.spot_name as name, ss.image, sc.wave_size, s
         </div>
         </section>
     </main>
+    <footer>
+        <div id="copyright">
+            <p>Copyright &copy; 2026 <span style="color:#00FF00;">bUrY_+sUrF</span>. Todos os direitos reservados.</p>
+        </div>
+    </footer>
 
     <script>
         document.querySelectorAll('.admin-tab').forEach(tab => {
