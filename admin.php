@@ -46,6 +46,11 @@ $sql = "SELECT ss.spot_id as id, ss.spot_name as name, ss.image, sc.wave_size, s
         .blog-form textarea { min-height: 120px; resize: vertical; }
         .blog-form button { padding: 10px 16px; background: #0066cc; color: white; border: none; border-radius: 4px; cursor: pointer; }
         .blog-form button:hover { background: #0052a3; }
+        .admin-tabs { display: flex; gap: 8px; margin: 20px 0; border-bottom: 1px solid #ddd; }
+        .admin-tab { padding: 10px 14px; border: 1px solid #ddd; border-bottom: none; border-radius: 4px 4px 0 0; background: #f5f5f5; color: #555; cursor: pointer; }
+        .admin-tab.active { background: #0066cc; border-color: #0066cc; color: white; }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
     </style>
 </head>
 <!-- Google tag (gtag.js) -->
@@ -64,6 +69,13 @@ $sql = "SELECT ss.spot_id as id, ss.spot_name as name, ss.image, sc.wave_size, s
             <a href="api/logout.php" style="color: #dc3545; text-decoration: none;">Logout</a>
         </div>
 
+        <div class="admin-tabs" role="tablist" aria-label="Seções do administrador">
+            <button class="admin-tab active" type="button" role="tab" aria-selected="true" aria-controls="spots-tab" data-tab="spots-tab">Spots</button>
+            <button class="admin-tab" type="button" role="tab" aria-selected="false" aria-controls="blog-tab" data-tab="blog-tab">Blog</button>
+            <button class="admin-tab" type="button" role="tab" aria-selected="false" aria-controls="newsletter-tab" data-tab="newsletter-tab">Newsletter</button>
+        </div>
+
+        <section id="spots-tab" class="tab-panel active" role="tabpanel">
         <?php foreach ($spots as $spot): 
             $cond = [
                 'wave_size' => $spot['wave_size'] ?? '',
@@ -103,8 +115,11 @@ $sql = "SELECT ss.spot_id as id, ss.spot_name as name, ss.image, sc.wave_size, s
                         </div>
                     </div>
                 </div>
+            </div>
         <?php endforeach; ?>
+            </section>
 
+            <section id="blog-tab" class="tab-panel" role="tabpanel">
         <div class="blog-form">
             <h3>Enviar novo post para blog</h3>
             <form id="blog-post-form">
@@ -121,7 +136,9 @@ $sql = "SELECT ss.spot_id as id, ss.spot_name as name, ss.image, sc.wave_size, s
                 <div class="upload-status" id="blog-post-status"></div>
             </form>
         </div>
+        </section>
 
+        <section id="newsletter-tab" class="tab-panel" role="tabpanel">
         <div class="blog-form" style="margin-top:18px;">
             <h3>Enviar newsletter</h3>
             <p>Envie um aviso simples por e-mail para todos os inscritos quando as fotos do dia estiverem prontas.</p>
@@ -138,9 +155,26 @@ $sql = "SELECT ss.spot_id as id, ss.spot_name as name, ss.image, sc.wave_size, s
                 <div class="upload-status" id="newsletter-send-status"></div>
             </div>
         </div>
+        </section>
     </main>
 
     <script>
+        document.querySelectorAll('.admin-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetId = tab.getAttribute('data-tab');
+
+                document.querySelectorAll('.admin-tab').forEach(item => {
+                    const isActive = item === tab;
+                    item.classList.toggle('active', isActive);
+                    item.setAttribute('aria-selected', isActive ? 'true' : 'false');
+                });
+
+                document.querySelectorAll('.tab-panel').forEach(panel => {
+                    panel.classList.toggle('active', panel.id === targetId);
+                });
+            });
+        });
+
         document.querySelectorAll('.upload-btn').forEach(btn => {
             btn.addEventListener('click', async (e) => {
                 const spotId = btn.getAttribute('data-spot-id');
