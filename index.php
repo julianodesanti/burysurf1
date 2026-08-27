@@ -132,8 +132,8 @@ foreach ($spots as $spot):
     <div id="ns-overlay" aria-hidden="true">
         <div id="ns-modal">
             <button class="ns-close" aria-label="Fechar">&times;</button>
-            <h3>Newsletter</h3>
-            <h2>Assine para receber atualizações semanais sobre as condições das ondas.</h2>
+            <h2>Newsletter</h2>
+            <h3>Assine para receber atualizações semanais sobre as condições das ondas.</h3>
             <form id="ns-form">
                 <input type="email" id="ns-email" placeholder="seu@email.com" required />
                 <button type="submit" class="ns-submit">Inscrever</button>

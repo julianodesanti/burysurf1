@@ -6808,13 +6808,13 @@
 		font-family: 'Inconsolata', monospace;
 	}
 
-	#ns-modal h2 {
+	#ns-modal h3 {
 		margin: 0 0 8px 0;
 		font-family: papyrus, sans-serif;
 		color: #00FF00;
 	}
 
-	#ns-modal h3 {
+	#ns-modal h2 {
 		padding: 22px;
 		font-family: papyrus, sans-serif;
 		color: #FFFFFF;
