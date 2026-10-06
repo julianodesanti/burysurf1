@@ -35,6 +35,9 @@ function linkyoutube() {
 function linktwitch() {
     window.open('https://twitch.com/burysurf', '_blank');
 }
+function linkkick() {
+    window.open('https://kick.com/burysurf', '_blank');
+}
 function linkfacebook() {
     window.open('https://www.facebook.com/profile.php?id=61568955166072', '_blank');
 }
