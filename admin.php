@@ -40,7 +40,7 @@ if ($newsletterResult) {
     <title>Admin - bUrY_+sUrF</title>
     <link rel="stylesheet" href="./css/style.css" />
     <style>
-        body.admin-page { font-family: "Trebuchet MS", Verdana, sans-serif; padding: 20px; background: #101411; color: #e7eee8; }
+        body.admin-page { font-family: "Trebuchet MS", Verdana, sans-serif; padding: 20px; background: #000000; color: #e7eee8; }
         body.admin-page main { max-width: 1080px; margin: 0 auto; background: #000000; padding: 24px; border: 1px solid #29352b; border-radius: 8px; box-shadow: 0 12px 36px rgba(0, 0, 0, .28); }
         .admin-page h2, .admin-page h3 { color: #f1f7f1; }
         .nav { margin-bottom: 20px; }
@@ -238,6 +238,13 @@ if ($newsletterResult) {
             </form>
         </section>
     </main>
+    <footer>
+		<div id="copyright">
+			<p>
+				Copyright &copy; 2026 <span style="color:#00FF00;">bUrY_+sUrF</span>. Todos os direitos reservados.
+			</p>
+		</div>
+	</footer>
 
     <script>
         const adminTabs = Array.from(document.querySelectorAll('.admin-tab'));
