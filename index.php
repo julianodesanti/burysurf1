@@ -53,7 +53,7 @@ if ($sres = $conn->query($spotSql)) {
             padding: clamp(16px, 5vw, 32px);
             border: 1px solid #00e94f;
             border-radius: 8px;
-            background: #111713;
+            background: #000000;
             color: #e7eee8;
             box-shadow: 0 12px 48px rgba(0, 0, 0, .72);
             font-family: "Trebuchet MS", "Segoe UI", sans-serif;
@@ -172,12 +172,12 @@ foreach ($spots as $spot):
     <dialog id="newsletter-modal" class="newsletter-modal" aria-labelledby="newsletter-title">
         <button type="button" class="newsletter-close" aria-label="Fechar janela">&times;</button>
         <p class="newsletter-eyebrow">bUrY_+sUrF</p>
-        <h2 id="newsletter-title">Fique por dentro das novidades</h2>
-        <p>Cadastre seu e-mail para receber notícias e novidades do nosso conteúdo.</p>
+        <h2 id="newsletter-title">Newslatter</h2>
+        <p>Cadastre seu e-mail para receber o boletim das ondas.</p>
         <form id="newsletter-form">
             <label for="newsletter-email">Seu e-mail</label>
             <input id="newsletter-email" type="email" name="email" autocomplete="email" required maxlength="254" placeholder="voce@exemplo.com" />
-            <button type="submit">Quero me inscrever</button>
+            <button type="submit">Inscrever</button>
             <p id="newsletter-status" class="newsletter-status" role="status" aria-live="polite"></p>
         </form>
     </dialog>

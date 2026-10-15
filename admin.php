@@ -41,12 +41,12 @@ if ($newsletterResult) {
     <link rel="stylesheet" href="./css/style.css" />
     <style>
         body.admin-page { font-family: "Trebuchet MS", Verdana, sans-serif; padding: 20px; background: #101411; color: #e7eee8; }
-        body.admin-page main { max-width: 1080px; margin: 0 auto; background: #191f1a; padding: 24px; border: 1px solid #29352b; border-radius: 8px; box-shadow: 0 12px 36px rgba(0, 0, 0, .28); }
+        body.admin-page main { max-width: 1080px; margin: 0 auto; background: #000000; padding: 24px; border: 1px solid #29352b; border-radius: 8px; box-shadow: 0 12px 36px rgba(0, 0, 0, .28); }
         .admin-page h2, .admin-page h3 { color: #f1f7f1; }
         .nav { margin-bottom: 20px; }
         .nav a { color: #00ef55; text-decoration: none; font-size: 14px; }
         .nav a:hover { text-decoration: underline; }
-        .spot-card { border: 1px solid #303a31; padding: 16px; margin-bottom: 16px; border-radius: 6px; display: flex; align-items: center; gap: 16px; background: #202720; }
+        .spot-card { border: 1px solid #00ff19; padding: 16px; margin-bottom: 16px; border-radius: 6px; display: flex; align-items: center; gap: 16px; background: #000000; }
         .spot-preview { width: 160px; height: 90px; background: #141a15; border-radius: 4px; display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; color: #9eaa9f; }
         .spot-preview img { width: 100%; height: 100%; object-fit: cover; }
         .spot-info { flex: 1; }
@@ -54,7 +54,7 @@ if ($newsletterResult) {
         .upload-form { display: flex; gap: 8px; align-items: center; }
         .upload-form input[type="file"] { padding: 4px; flex: 1; }
         .admin-page button { font-family: inherit; }
-        .admin-page button:not(.admin-tab) { padding: 8px 12px; border: 0; border-radius: 4px; background: #00d64f; color: #07100a; cursor: pointer; font-weight: bold; }
+        .admin-page button:not(.admin-tab) { padding: 8px 12px; border: 0; border-radius: 4px; background: #0040ff; color: #ffffff; cursor: pointer; font-weight: bold; }
         .upload-form button, .blog-form button, .newsletter-setup, .newsletter-form button { padding: 9px 14px; background: #00d64f; color: #07100a; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
         .admin-page button:hover { background: #00f45a; }
         .admin-page button:disabled { opacity: .6; cursor: wait; }

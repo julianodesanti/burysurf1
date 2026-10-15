@@ -18,7 +18,7 @@ $sql = "CREATE TABLE IF NOT EXISTS newsletter_subscribers (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     email VARCHAR(254) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    unsub_token CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    unsub_token CHAR(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
     PRIMARY KEY (id),
     UNIQUE KEY uq_newsletter_subscribers_email (email),
     UNIQUE KEY uq_newsletter_subscribers_unsub_token (unsub_token)
@@ -65,7 +65,7 @@ if (!$conn->query("ALTER TABLE newsletter_subscribers MODIFY created_at DATETIME
 }
 
 if (!isset($columns['unsub_token'])) {
-    $alterResult = $conn->query("ALTER TABLE newsletter_subscribers ADD unsub_token CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NULL DEFAULT NULL");
+    $alterResult = $conn->query("ALTER TABLE newsletter_subscribers ADD unsub_token CHAR(32) CHARACTER SET ascii COLLATE ascii_bin NULL DEFAULT NULL");
     if (!$alterResult) {
         error_log('Newsletter unsub_token column addition failed: ' . $conn->error);
         http_response_code(500);
@@ -73,7 +73,7 @@ if (!isset($columns['unsub_token'])) {
     }
 }
 
-$tokenResult = $conn->query("SELECT id FROM newsletter_subscribers WHERE unsub_token IS NULL OR unsub_token = ''");
+$tokenResult = $conn->query("SELECT id, unsub_token FROM newsletter_subscribers");
 if (!$tokenResult) {
     error_log('Newsletter token lookup failed: ' . $conn->error);
     http_response_code(500);
@@ -88,16 +88,23 @@ if (!$tokenUpdate) {
 }
 
 while ($row = $tokenResult->fetch_assoc()) {
-    $token = bin2hex(random_bytes(32));
+    $currentToken = trim((string) ($row['unsub_token'] ?? ''));
+    if (preg_match('/^[a-f0-9]{32,}$/i', $currentToken)) {
+        $token = strtolower(substr($currentToken, 0, 32));
+    } else {
+        $token = bin2hex(random_bytes(16));
+    }
     $subscriberId = (int) $row['id'];
-    $tokenUpdate->bind_param('si', $token, $subscriberId);
-    if (!$tokenUpdate->execute()) {
-        $error = $tokenUpdate->error;
-        $tokenResult->free();
-        $tokenUpdate->close();
-        error_log('Newsletter token update failed: ' . $error);
-        http_response_code(500);
-        exit('Não foi possível gerar os tokens de cancelamento.');
+    if ($token !== $currentToken) {
+        $tokenUpdate->bind_param('si', $token, $subscriberId);
+        if (!$tokenUpdate->execute()) {
+            $error = $tokenUpdate->error;
+            $tokenResult->free();
+            $tokenUpdate->close();
+            error_log('Newsletter token update failed: ' . $error);
+            http_response_code(500);
+            exit('Não foi possível gerar os tokens de cancelamento.');
+        }
     }
 }
 $tokenResult->free();
@@ -116,21 +123,18 @@ while ($index = $indexesResult->fetch_assoc()) {
 }
 $indexesResult->free();
 
+if (!$conn->query("ALTER TABLE newsletter_subscribers MODIFY unsub_token CHAR(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL")) {
+    error_log('Newsletter token column normalization failed: ' . $conn->error);
+    http_response_code(500);
+    exit('Não foi possível ajustar a coluna de tokens de cancelamento.');
+}
+
 if (!isset($indexes['uq_newsletter_subscribers_unsub_token'])) {
-    if (!$conn->query("ALTER TABLE newsletter_subscribers MODIFY unsub_token CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL")) {
-        error_log('Newsletter token column normalization failed: ' . $conn->error);
-        http_response_code(500);
-        exit('Não foi possível ajustar a coluna de tokens de cancelamento.');
-    }
     if (!$conn->query("ALTER TABLE newsletter_subscribers ADD UNIQUE KEY uq_newsletter_subscribers_unsub_token (unsub_token)")) {
         error_log('Newsletter token index creation failed: ' . $conn->error);
         http_response_code(500);
         exit('Não foi possível proteger a unicidade dos tokens de cancelamento.');
     }
-} elseif (!$conn->query("ALTER TABLE newsletter_subscribers MODIFY unsub_token CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL")) {
-    error_log('Newsletter token column normalization failed: ' . $conn->error);
-    http_response_code(500);
-    exit('Não foi possível ajustar a coluna de tokens de cancelamento.');
 }
 
 header('Location: ../admin.php?tab=inscritos', true, 303);
