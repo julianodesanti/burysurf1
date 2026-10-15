@@ -24,7 +24,8 @@ if ($email === '' || strlen($email) > 254 || !filter_var($email, FILTER_VALIDATE
     exit;
 }
 
-$stmt = $conn->prepare('INSERT INTO newsletter_subscribers (email) VALUES (?)');
+$unsubscribeToken = bin2hex(random_bytes(32));
+$stmt = $conn->prepare('INSERT INTO newsletter_subscribers (email, unsub_token) VALUES (?, ?)');
 if (!$stmt) {
     error_log('Newsletter subscription prepare failed: ' . $conn->error);
     http_response_code(500);
@@ -32,7 +33,7 @@ if (!$stmt) {
     exit;
 }
 
-$stmt->bind_param('s', $email);
+$stmt->bind_param('ss', $email, $unsubscribeToken);
 if ($stmt->execute()) {
     $stmt->close();
     echo json_encode(['success' => true, 'message' => 'Inscrição realizada com sucesso. Obrigado!']);

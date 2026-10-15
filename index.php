@@ -42,27 +42,44 @@ if ($sres = $conn->query($spotSql)) {
     <link rel="icon" type="image/x-icon" href="css/img/favicon.png">
     <style>
         .newsletter-modal {
-            width: min(440px, calc(100% - 40px));
-            padding: 32px;
-            border: 2px solid #00ff00;
-            border-radius: 10px;
-            color: #111;
-            box-shadow: 0 12px 48px rgba(0, 0, 0, .45);
+            position: fixed;
+            inset: 0;
+            box-sizing: border-box;
+            width: min(480px, calc(100vw - 24px));
+            max-height: calc(100vh - 24px);
+            max-height: calc(100dvh - 24px);
+            margin: auto;
+            overflow-y: auto;
+            padding: clamp(16px, 5vw, 32px);
+            border: 1px solid #00e94f;
+            border-radius: 8px;
+            background: #111713;
+            color: #e7eee8;
+            box-shadow: 0 12px 48px rgba(0, 0, 0, .72);
+            font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+            text-align: center;
         }
-        .newsletter-modal::backdrop { background: rgba(0, 0, 0, .72); }
-        .newsletter-modal h2 { margin: 0 28px 12px 0; }
-        .newsletter-modal p { line-height: 1.5; }
-        .newsletter-modal .newsletter-eyebrow { color: #078307; font-weight: bold; letter-spacing: .08em; }
-        .newsletter-modal label { display: block; margin: 18px 0 6px; font-weight: bold; }
-        .newsletter-modal input { width: 100%; box-sizing: border-box; padding: 12px; border: 1px solid #aaa; border-radius: 5px; font: inherit; }
-        .newsletter-modal form button { width: 100%; margin-top: 12px; padding: 12px; border: 0; border-radius: 5px; background: #00d000; color: #111; font-weight: bold; cursor: pointer; }
+        .newsletter-modal::backdrop { background: rgba(0, 0, 0, .78); }
+        .newsletter-modal h2 { margin: 0 18px 12px; color: #f3fff5; font-size: clamp(1.2rem, 5vw, 1.8rem); line-height: 1.2; }
+        .newsletter-modal p { line-height: 1.55; }
+        .newsletter-modal .newsletter-eyebrow { margin: 0 0 10px; color: #00ef55; font-size: .82rem; font-weight: bold; letter-spacing: .16em; text-transform: uppercase; }
+        .newsletter-modal label { display: block; margin: 18px 0 6px; color: #dce9de; font-weight: bold; text-align: left; }
+        .newsletter-modal input { width: 100%; box-sizing: border-box; padding: 12px; border: 1px solid #3c4d3f; border-radius: 4px; outline-color: #00e94f; background: #080d09; color: #f3fff5; font: inherit; }
+        .newsletter-modal form button { width: 100%; margin-top: 12px; padding: 12px; border: 0; border-radius: 4px; background: #00d64f; color: #07100a; font: inherit; font-weight: bold; cursor: pointer; }
+        .newsletter-modal form button:hover { background: #00f45a; }
         .newsletter-modal form button:disabled { opacity: .6; cursor: wait; }
-        .newsletter-close { position: absolute; top: 8px; right: 12px; padding: 0 6px; border: 0; background: none; color: #333; font-size: 28px; cursor: pointer; }
-        .newsletter-modal .newsletter-status { min-height: 1.4em; margin: 10px 0 0; }
-        .newsletter-status-success { color: #187b18; }
-        .newsletter-status-error { color: #b42318; }
+        .newsletter-close { position: absolute; top: 8px; right: 10px; padding: 0 6px; border: 0; background: none; color: #c7d2c8; font: inherit; font-size: 28px; line-height: 1; cursor: pointer; }
+        .newsletter-close:hover { color: #00ef55; }
+        .newsletter-modal .newsletter-status { min-height: 1.4em; margin: 10px 0 0; overflow-wrap: anywhere; }
+        .newsletter-status-success { color: #45e879; }
+        .newsletter-status-error { color: #ff7373; }
         @media (max-width: 480px) {
-            .newsletter-modal { padding: 26px 22px; }
+            .newsletter-modal { width: calc(100vw - 20px); max-height: calc(100dvh - 20px); }
+            .newsletter-modal h2 { margin-right: 10px; margin-left: 10px; }
+        }
+        @media (max-width: 200px) {
+            .newsletter-modal { width: calc(100vw - 12px); padding: 14px 10px; }
+            .newsletter-modal h2 { margin-right: 16px; margin-left: 16px; }
         }
     </style>
 </head>
