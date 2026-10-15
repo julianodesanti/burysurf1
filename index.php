@@ -40,6 +40,31 @@ if ($sres = $conn->query($spotSql)) {
     <link rel="stylesheet" type="text/css" href="css/style.css"/>
     <title>bUrY_+sUrF</title>
     <link rel="icon" type="image/x-icon" href="css/img/favicon.png">
+    <style>
+        .newsletter-modal {
+            width: min(440px, calc(100% - 40px));
+            padding: 32px;
+            border: 2px solid #00ff00;
+            border-radius: 10px;
+            color: #111;
+            box-shadow: 0 12px 48px rgba(0, 0, 0, .45);
+        }
+        .newsletter-modal::backdrop { background: rgba(0, 0, 0, .72); }
+        .newsletter-modal h2 { margin: 0 28px 12px 0; }
+        .newsletter-modal p { line-height: 1.5; }
+        .newsletter-modal .newsletter-eyebrow { color: #078307; font-weight: bold; letter-spacing: .08em; }
+        .newsletter-modal label { display: block; margin: 18px 0 6px; font-weight: bold; }
+        .newsletter-modal input { width: 100%; box-sizing: border-box; padding: 12px; border: 1px solid #aaa; border-radius: 5px; font: inherit; }
+        .newsletter-modal form button { width: 100%; margin-top: 12px; padding: 12px; border: 0; border-radius: 5px; background: #00d000; color: #111; font-weight: bold; cursor: pointer; }
+        .newsletter-modal form button:disabled { opacity: .6; cursor: wait; }
+        .newsletter-close { position: absolute; top: 8px; right: 12px; padding: 0 6px; border: 0; background: none; color: #333; font-size: 28px; cursor: pointer; }
+        .newsletter-modal .newsletter-status { min-height: 1.4em; margin: 10px 0 0; }
+        .newsletter-status-success { color: #187b18; }
+        .newsletter-status-error { color: #b42318; }
+        @media (max-width: 480px) {
+            .newsletter-modal { padding: 26px 22px; }
+        }
+    </style>
 </head>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-S5G2HVDDKB">
@@ -127,6 +152,18 @@ foreach ($spots as $spot):
 <?php endforeach; ?>
         </div>
     </main>
+    <dialog id="newsletter-modal" class="newsletter-modal" aria-labelledby="newsletter-title">
+        <button type="button" class="newsletter-close" aria-label="Fechar janela">&times;</button>
+        <p class="newsletter-eyebrow">bUrY_+sUrF</p>
+        <h2 id="newsletter-title">Fique por dentro das novidades</h2>
+        <p>Cadastre seu e-mail para receber notícias e novidades do nosso conteúdo.</p>
+        <form id="newsletter-form">
+            <label for="newsletter-email">Seu e-mail</label>
+            <input id="newsletter-email" type="email" name="email" autocomplete="email" required maxlength="254" placeholder="voce@exemplo.com" />
+            <button type="submit">Quero me inscrever</button>
+            <p id="newsletter-status" class="newsletter-status" role="status" aria-live="polite"></p>
+        </form>
+    </dialog>
     <footer>
         <div id="copyright">
             <p>Copyright &copy; 2026 <span style="color:#00FF00;">bUrY_+sUrF</span>. Todos os direitos reservados.</p>
@@ -135,6 +172,50 @@ foreach ($spots as $spot):
     <script type="text/javascript" src="./js/BurySurfDB.js"></script>
     <script type="text/javascript" src="./js/main.js"></script>
     <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const newsletterModal = document.getElementById('newsletter-modal');
+        const newsletterForm = document.getElementById('newsletter-form');
+        const newsletterStatus = document.getElementById('newsletter-status');
+        const newsletterClose = document.querySelector('.newsletter-close');
+
+        if (newsletterModal && typeof newsletterModal.showModal === 'function') {
+            newsletterModal.showModal();
+        }
+
+        newsletterClose.addEventListener('click', function () {
+            newsletterModal.close();
+        });
+
+        newsletterForm.addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const submitButton = newsletterForm.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            newsletterStatus.textContent = 'Enviando sua inscrição...';
+            newsletterStatus.className = 'newsletter-status';
+
+            try {
+                const response = await fetch('./api/subscribe_newsletter.php', {
+                    method: 'POST',
+                    body: new FormData(newsletterForm)
+                });
+                const result = await response.json();
+
+                if (!response.ok || !result.success) {
+                    throw new Error(result.error || 'Não foi possível concluir sua inscrição.');
+                }
+
+                newsletterStatus.textContent = result.message;
+                newsletterStatus.classList.add('newsletter-status-success');
+                newsletterForm.reset();
+            } catch (error) {
+                newsletterStatus.textContent = error.message || 'Erro de rede ao enviar sua inscrição.';
+                newsletterStatus.classList.add('newsletter-status-error');
+            } finally {
+                submitButton.disabled = false;
+            }
+        });
+    });
+
     // Inline JS to handle edit toggles and AJAX updates to API
     document.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('.toggle-edit').forEach(btn => {

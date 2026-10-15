@@ -13,6 +13,19 @@ $sql = "SELECT ss.spot_id as id, ss.spot_name as name, ss.image, sc.wave_size, s
     $res = $conn->query($sql);
         if ($res) {while ($r = $res->fetch_assoc()) $spots[] = $r;}
 
+$subscribers = [];
+$newsletterError = false;
+$newsletterResult = $conn->query("SELECT email, created_at FROM newsletter_subscribers ORDER BY created_at DESC");
+if ($newsletterResult) {
+    while ($subscriber = $newsletterResult->fetch_assoc()) {
+        $subscribers[] = $subscriber;
+    }
+    $newsletterResult->free();
+} else {
+    error_log('Newsletter subscriber query failed: ' . $conn->error);
+    $newsletterError = true;
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -46,6 +59,20 @@ $sql = "SELECT ss.spot_id as id, ss.spot_name as name, ss.image, sc.wave_size, s
         .blog-form textarea { min-height: 120px; resize: vertical; }
         .blog-form button { padding: 10px 16px; background: #0066cc; color: white; border: none; border-radius: 4px; cursor: pointer; }
         .blog-form button:hover { background: #0052a3; }
+        .admin-tabs { display: flex; gap: 8px; margin: 20px 0; border-bottom: 1px solid #ddd; }
+        .admin-tab { padding: 10px 16px; border: 1px solid #ddd; border-bottom: 0; border-radius: 5px 5px 0 0; background: #f5f5f5; color: #333; cursor: pointer; font-size: 14px; }
+        .admin-tab[aria-selected="true"] { background: #0066cc; color: white; border-color: #0066cc; }
+        .tab-panel[hidden] { display: none; }
+        .newsletter-table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+        .newsletter-table th, .newsletter-table td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+        .newsletter-table th { background: #f5f5f5; }
+        .newsletter-alert { padding: 12px; border-radius: 4px; background: #fff3cd; color: #664d03; }
+        .newsletter-setup { margin-top: 12px; padding: 9px 14px; border: 0; border-radius: 4px; background: #0066cc; color: white; cursor: pointer; }
+        @media (max-width: 600px) {
+            .admin-tabs { flex-wrap: wrap; }
+            .admin-tab { flex: 1 1 auto; }
+            .newsletter-table th, .newsletter-table td { padding: 7px; overflow-wrap: anywhere; }
+        }
     </style>
 </head>
 <!-- Google tag (gtag.js) -->
@@ -64,6 +91,13 @@ $sql = "SELECT ss.spot_id as id, ss.spot_name as name, ss.image, sc.wave_size, s
             <a href="api/logout.php" style="color: #dc3545; text-decoration: none;">Logout</a>
         </div>
 
+        <div class="admin-tabs" role="tablist" aria-label="Funções do administrador">
+            <button type="button" class="admin-tab" id="tab-button-spots" role="tab" aria-selected="true" aria-controls="tab-spots" data-tab="tab-spots">Praias e condições</button>
+            <button type="button" class="admin-tab" id="tab-button-blog" role="tab" aria-selected="false" aria-controls="tab-blog" data-tab="tab-blog">Blog</button>
+            <button type="button" class="admin-tab" id="tab-button-newsletter" role="tab" aria-selected="false" aria-controls="tab-newsletter" data-tab="tab-newsletter">Newsletter</button>
+        </div>
+
+        <section class="tab-panel" id="tab-spots" role="tabpanel" aria-labelledby="tab-button-spots">
         <?php foreach ($spots as $spot): 
             $cond = [
                 'wave_size' => $spot['wave_size'] ?? '',
@@ -103,8 +137,11 @@ $sql = "SELECT ss.spot_id as id, ss.spot_name as name, ss.image, sc.wave_size, s
                         </div>
                     </div>
                 </div>
+            </div>
         <?php endforeach; ?>
+        </section>
 
+        <section class="tab-panel" id="tab-blog" role="tabpanel" aria-labelledby="tab-button-blog" hidden>
         <div class="blog-form">
             <h3>Enviar novo post para blog</h3>
             <form id="blog-post-form">
@@ -121,9 +158,67 @@ $sql = "SELECT ss.spot_id as id, ss.spot_name as name, ss.image, sc.wave_size, s
                 <div class="upload-status" id="blog-post-status"></div>
             </form>
         </div>
+        </section>
+
+        <section class="tab-panel" id="tab-newsletter" role="tabpanel" aria-labelledby="tab-button-newsletter" hidden>
+            <h3>Contatos inscritos na newsletter</h3>
+            <?php if ($newsletterError): ?>
+                <div class="newsletter-alert">
+                    A lista de contatos não está disponível. Se esta for a primeira utilização, crie a tabela de inscritos:
+                    <form method="post" action="./api/migrate_newsletter.php">
+                        <button type="submit" class="newsletter-setup">Preparar lista de inscritos</button>
+                    </form>
+                </div>
+            <?php elseif (count($subscribers) === 0): ?>
+                <p>Ainda não há contatos inscritos.</p>
+            <?php else: ?>
+                <p>Total de inscritos: <?php echo count($subscribers); ?></p>
+                <table class="newsletter-table">
+                    <thead>
+                        <tr><th>E-mail</th><th>Data da inscrição</th></tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($subscribers as $subscriber): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($subscriber['email'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                <td><?php echo htmlspecialchars($subscriber['created_at'], ENT_QUOTES, 'UTF-8'); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php endif; ?>
+        </section>
     </main>
 
     <script>
+        const adminTabs = Array.from(document.querySelectorAll('.admin-tab'));
+        const tabPanels = Array.from(document.querySelectorAll('.tab-panel'));
+
+        function activateTab(tabId) {
+            adminTabs.forEach(tab => {
+                const selected = tab.dataset.tab === tabId;
+                tab.setAttribute('aria-selected', selected ? 'true' : 'false');
+            });
+            tabPanels.forEach(panel => {
+                panel.hidden = panel.id !== tabId;
+            });
+        }
+
+        adminTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                activateTab(tab.dataset.tab);
+                const url = new URL(window.location.href);
+                url.searchParams.set('tab', tab.dataset.tab.replace('tab-', ''));
+                window.history.replaceState(null, '', url);
+            });
+        });
+
+        const requestedTab = new URLSearchParams(window.location.search).get('tab');
+        if (requestedTab) {
+            const requestedPanel = document.getElementById('tab-' + requestedTab);
+            if (requestedPanel) activateTab(requestedPanel.id);
+        }
+
         document.querySelectorAll('.upload-btn').forEach(btn => {
             btn.addEventListener('click', async (e) => {
                 const spotId = btn.getAttribute('data-spot-id');
