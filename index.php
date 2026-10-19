@@ -172,8 +172,8 @@ foreach ($spots as $spot):
     <dialog id="newsletter-modal" class="newsletter-modal" aria-labelledby="newsletter-title">
         <button type="button" class="newsletter-close" aria-label="Fechar janela">&times;</button>
         <p class="newsletter-eyebrow">bUrY_+sUrF</p>
-        <h2 id="newsletter-title">Newslatter</h2>
-        <p>Cadastre seu e-mail para receber o boletim das ondas.</p>
+        <h2 id="newsletter-title">Newsletter</h2>
+        <p>Cadastre seu e-mail para receber o boletim das ondas. A inscrição só será concluída depois que você confirmar pelo link enviado ao seu e-mail.</p>
         <form id="newsletter-form">
             <label for="newsletter-email">Seu e-mail</label>
             <input id="newsletter-email" type="email" name="email" autocomplete="email" required maxlength="254" placeholder="voce@exemplo.com" />

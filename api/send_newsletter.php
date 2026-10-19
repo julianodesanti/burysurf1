@@ -40,7 +40,7 @@ if (!filter_var($fromEmail, FILTER_VALIDATE_EMAIL) || !function_exists('mail')) 
     newsletterResponse(500, ['success' => false, 'error' => 'O envio de e-mails não está configurado corretamente no servidor.']);
 }
 
-$result = $conn->query('SELECT id, email FROM newsletter_subscribers ORDER BY id');
+$result = $conn->query('SELECT id, email FROM newsletter_subscribers WHERE confirmed_at IS NOT NULL ORDER BY id');
 if (!$result) {
     error_log('Newsletter recipient query failed: ' . $conn->error);
     newsletterResponse(500, ['success' => false, 'error' => 'Não foi possível carregar a lista de inscritos.']);

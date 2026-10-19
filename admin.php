@@ -20,7 +20,7 @@ $sql = "SELECT ss.spot_id as id, ss.spot_name as name, ss.image, sc.wave_size, s
 
 $subscribers = [];
 $newsletterError = false;
-$newsletterResult = $conn->query("SELECT email, created_at FROM newsletter_subscribers ORDER BY created_at DESC");
+$newsletterResult = $conn->query("SELECT email, created_at FROM newsletter_subscribers WHERE confirmed_at IS NOT NULL ORDER BY created_at DESC");
 if ($newsletterResult) {
     while ($subscriber = $newsletterResult->fetch_assoc()) {
         $subscribers[] = $subscriber;
@@ -185,7 +185,7 @@ if ($newsletterResult) {
 
         <section class="tab-panel" id="tab-newsletter" role="tabpanel" aria-labelledby="tab-button-newsletter" hidden>
             <h3>Compor newsletter</h3>
-            <p><?php echo count($subscribers); ?> inscritos. O assunto e o corpo serão enviados individualmente a cada endereço.</p>
+            <p><?php echo count($subscribers); ?> inscritos confirmados. O assunto e o corpo serão enviados individualmente a cada endereço.</p>
             <form id="newsletter-send-form" class="newsletter-form">
                 <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($newsletterCsrf, ENT_QUOTES, 'UTF-8'); ?>" />
                 <label>Assunto
