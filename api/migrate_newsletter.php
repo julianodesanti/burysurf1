@@ -19,13 +19,9 @@ $sql = "CREATE TABLE IF NOT EXISTS newsletter_subscribers (
     email VARCHAR(254) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     unsub_token CHAR(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
-    confirmed_at DATETIME NULL DEFAULT NULL,
-    confirmation_token_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NULL DEFAULT NULL,
-    confirmation_expires_at DATETIME NULL DEFAULT NULL,
     PRIMARY KEY (id),
     UNIQUE KEY uq_newsletter_subscribers_email (email),
-    UNIQUE KEY uq_newsletter_subscribers_unsub_token (unsub_token),
-    UNIQUE KEY uq_newsletter_subscribers_confirmation_token_hash (confirmation_token_hash)
+    UNIQUE KEY uq_newsletter_subscribers_unsub_token (unsub_token)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
 
 if (!$conn->query($sql)) {
@@ -75,37 +71,6 @@ if (!isset($columns['unsub_token'])) {
         http_response_code(500);
         exit('Não foi possível preparar os tokens de cancelamento.');
     }
-}
-
-$columnsResult = $conn->query("SHOW COLUMNS FROM newsletter_subscribers");
-if (!$columnsResult) {
-    error_log('Newsletter confirmation column inspection failed: ' . $conn->error);
-    http_response_code(500);
-    exit('Não foi possível verificar a estrutura das confirmações.');
-}
-$columns = [];
-while ($column = $columnsResult->fetch_assoc()) {
-    $columns[$column['Field']] = true;
-}
-$columnsResult->free();
-
-$confirmationColumns = [
-    'confirmed_at' => "DATETIME NULL DEFAULT NULL",
-    'confirmation_token_hash' => "CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NULL DEFAULT NULL",
-    'confirmation_expires_at' => "DATETIME NULL DEFAULT NULL"
-];
-foreach ($confirmationColumns as $columnName => $definition) {
-    if (!isset($columns[$columnName]) && !$conn->query("ALTER TABLE newsletter_subscribers ADD {$columnName} {$definition}")) {
-        error_log('Newsletter confirmation column addition failed: ' . $conn->error);
-        http_response_code(500);
-        exit('Não foi possível preparar a confirmação das inscrições.');
-    }
-}
-
-if (!$conn->query("UPDATE newsletter_subscribers SET confirmed_at = created_at WHERE confirmed_at IS NULL AND confirmation_token_hash IS NULL")) {
-    error_log('Newsletter legacy confirmation migration failed: ' . $conn->error);
-    http_response_code(500);
-    exit('Não foi possível migrar as inscrições existentes.');
 }
 
 $tokenResult = $conn->query("SELECT id, unsub_token FROM newsletter_subscribers");
@@ -170,21 +135,6 @@ if (!isset($indexes['uq_newsletter_subscribers_unsub_token'])) {
         http_response_code(500);
         exit('Não foi possível proteger a unicidade dos tokens de cancelamento.');
     }
-}
-
-$confirmationIndexResult = $conn->query("SHOW INDEX FROM newsletter_subscribers WHERE Key_name = 'uq_newsletter_subscribers_confirmation_token_hash'");
-if (!$confirmationIndexResult) {
-    error_log('Newsletter confirmation index inspection failed: ' . $conn->error);
-    http_response_code(500);
-    exit('Não foi possível verificar o índice dos tokens de confirmação.');
-}
-$hasConfirmationIndex = $confirmationIndexResult->num_rows > 0;
-$confirmationIndexResult->free();
-
-if (!$hasConfirmationIndex && !$conn->query("ALTER TABLE newsletter_subscribers ADD UNIQUE KEY uq_newsletter_subscribers_confirmation_token_hash (confirmation_token_hash)")) {
-    error_log('Newsletter confirmation index creation failed: ' . $conn->error);
-    http_response_code(500);
-    exit('Não foi possível proteger os tokens de confirmação.');
 }
 
 header('Location: ../admin.php?tab=inscritos', true, 303);
