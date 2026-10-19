@@ -215,7 +215,13 @@ foreach ($spots as $spot):
                     method: 'POST',
                     body: new FormData(newsletterForm)
                 });
-                const result = await response.json();
+                const responseText = await response.text();
+                let result;
+                try {
+                    result = JSON.parse(responseText);
+                } catch {
+                    throw new Error('O servidor retornou uma resposta inválida ao processar sua inscrição. Tente novamente mais tarde.');
+                }
 
                 if (!response.ok || !result.success) {
                     throw new Error(result.error || 'Não foi possível concluir sua inscrição.');

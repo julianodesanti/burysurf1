@@ -38,6 +38,8 @@ if (!$stmt) {
 $stmt->bind_param('sss', $email, $createdAt, $unsubscribeToken);
 if ($stmt->execute()) {
     $stmt->close();
+    echo json_encode(['success' => true, 'message' => 'Inscrição realizada com sucesso. Obrigado!']);
+    exit;
 }
 
 $errorCode = $stmt->errno;
