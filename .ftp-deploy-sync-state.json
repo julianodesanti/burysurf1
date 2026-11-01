@@ -1,0 +1,323 @@
+{
+    "description": "DO NOT DELETE THIS FILE. This file is used to keep track of which files have been synced in the most recent deployment. If you delete this file a resync will need to be done (which can take a while) - read more: https://github.com/SamKirkland/FTP-Deploy-Action",
+    "version": "1.0.0",
+    "generatedTime": 1792780097862,
+    "data": [
+        {
+            "type": "file",
+            "name": ".ftp-deploy-sync-state.json",
+            "size": 13603,
+            "hash": "02abbc107ce293bf1592e7693008eaa3068dc39b7dc1c511eca2f881951f7fd2"
+        },
+        {
+            "type": "file",
+            "name": ".htaccess",
+            "size": 729,
+            "hash": "076680c1ac09a294b30f2aa3ff5ab73f9da18b840260a425850b1e2f79b39e6c"
+        },
+        {
+            "type": "file",
+            "name": "LICENSE",
+            "size": 1064,
+            "hash": "ce72b4e0a648515b2c7d7874790f1a6fb96f80db8e7fc217b08ae9297a3518a8"
+        },
+        {
+            "type": "file",
+            "name": "Readme.txt",
+            "size": 1028,
+            "hash": "38ac7e859b493efeb17b2f5e73e52228d2860d1365010a783e5042a6938f5af6"
+        },
+        {
+            "type": "file",
+            "name": "admin.php",
+            "size": 23699,
+            "hash": "65f4616f42574fdb3fc9e53afc3bb7b8cefe23c2497a8b17ed550f12ecd059d6"
+        },
+        {
+            "type": "folder",
+            "name": "api"
+        },
+        {
+            "type": "file",
+            "name": "blog.php",
+            "size": 3786,
+            "hash": "0fcda8da23884f16feec0b2866176f53fa7210dff82cb4ac318181f23cb893bc"
+        },
+        {
+            "type": "file",
+            "name": "cookies.html",
+            "size": 9424,
+            "hash": "70423e9bf2ed0c29b389487c88c014e160ed01b2dbfc9f3dc6cc973dd5f0e134"
+        },
+        {
+            "type": "folder",
+            "name": "css"
+        },
+        {
+            "type": "file",
+            "name": "get_posts.php",
+            "size": 826,
+            "hash": "49bf74d43284540a01e358343d02c0534ad879f1d005c5cc3080e61cc5b3d98b"
+        },
+        {
+            "type": "file",
+            "name": "index.php",
+            "size": 14267,
+            "hash": "dcf201e0bf531bcdb91510ccbc038d61781d813d757d9c402d8e47a92149f260"
+        },
+        {
+            "type": "folder",
+            "name": "js"
+        },
+        {
+            "type": "file",
+            "name": "login.php",
+            "size": 3599,
+            "hash": "72845a8481e04aec780f94555837f976ee022ccba3fb85c8ced1e4e14d8e4a33"
+        },
+        {
+            "type": "file",
+            "name": "package-lock.json",
+            "size": 5107,
+            "hash": "d6e0a4401f13282ab31aa54a8d0c8f1cf88b2f296b374b0b5931798b235472b7"
+        },
+        {
+            "type": "file",
+            "name": "package.json",
+            "size": 550,
+            "hash": "d8e29232802212e6d49b14cdd68c9b5c904742d92fc3ad2a24bf58afb5a641e6"
+        },
+        {
+            "type": "file",
+            "name": "privacidade.html",
+            "size": 27407,
+            "hash": "31f6100ec85ad8b4b0d01219d66e7d336a1b47f80ea808bfc5d699872509fb07"
+        },
+        {
+            "type": "file",
+            "name": "sobre.html",
+            "size": 6066,
+            "hash": "6351250f8efe0cdb217f79faabe5a27cd74cb054a841106fa720a3c448e2f419"
+        },
+        {
+            "type": "file",
+            "name": "vlog.html",
+            "size": 12481,
+            "hash": "f1d0ecba5f56357b28dd4cb23ce5abb12db906959ee44a046286661c51791a43"
+        },
+        {
+            "type": "file",
+            "name": "api/add_blog_post.php",
+            "size": 3315,
+            "hash": "4d7f90bb3a1a42901461c38c3757782cfc1bc24f7c968a21a4d0aa682d9bad42"
+        },
+        {
+            "type": "file",
+            "name": "api/check_auth.php",
+            "size": 196,
+            "hash": "148b51c96bda5d090da800b5cea75554b7eab72c1db485e6a4acb4a4a6469f2e"
+        },
+        {
+            "type": "file",
+            "name": "api/db_config.php",
+            "size": 615,
+            "hash": "00d58910ba12af5a72089692cf91f3463ed556e6f31c691965656d832811cbf1"
+        },
+        {
+            "type": "file",
+            "name": "api/get_conditions.php",
+            "size": 1085,
+            "hash": "b882de614212e1f0e917fc42de60cc6e776c61183ac39f0f820f70701af5f9fc"
+        },
+        {
+            "type": "file",
+            "name": "api/get_historical_data.php",
+            "size": 1256,
+            "hash": "9777c43920a5cf60e0dd5fae9f0eb7311933f3fb23d2f11fcc9c733a4433babc"
+        },
+        {
+            "type": "file",
+            "name": "api/get_spot_conditions.php",
+            "size": 1402,
+            "hash": "ef295aec591eb847693e9350e8834e12d3e0b5bc99b8dfd8daef6e359f53dd00"
+        },
+        {
+            "type": "file",
+            "name": "api/get_spots.php",
+            "size": 482,
+            "hash": "c40dfec58800f0a5b464c2d9c2b16854e264c05d090718cffdc8235bf0597f45"
+        },
+        {
+            "type": "file",
+            "name": "api/login_process.php",
+            "size": 1247,
+            "hash": "d51fa1d0338b41b4a471115c060401cc393841adee9322ba3a41ad166d67467a"
+        },
+        {
+            "type": "file",
+            "name": "api/logout.php",
+            "size": 122,
+            "hash": "004d7916c95944cfa165e8ddf8eddbcc887fdada27642e1baef64385c70877e7"
+        },
+        {
+            "type": "file",
+            "name": "api/migrate_add_image.php",
+            "size": 985,
+            "hash": "0f70f2077eb83f6bf5c672f7ed2aa92c894b63936dcd30fa3b0ef35170ad77db"
+        },
+        {
+            "type": "file",
+            "name": "api/migrate_newsletter.php",
+            "size": 5687,
+            "hash": "87591d21b8f9ae67cf8f95bd0f0e7edfe1ded5da19a2d69683b7021e49c6127a"
+        },
+        {
+            "type": "file",
+            "name": "api/send_newsletter.php",
+            "size": 3367,
+            "hash": "86835f1870ed7629f22e0f62144979effe45dcb03b39c93238511f5a5ad03fbd"
+        },
+        {
+            "type": "file",
+            "name": "api/subscribe_newsletter.php",
+            "size": 1947,
+            "hash": "bce472422984b863516ed88be0d3b69562f5e73ff1108afcfadf93bed3e60101"
+        },
+        {
+            "type": "file",
+            "name": "api/update_conditions.php",
+            "size": 2644,
+            "hash": "6a97ea83368b3353a13b7cf639fde0ac1e7d28c571563d80887eb2f12bedf253"
+        },
+        {
+            "type": "file",
+            "name": "api/upload_image.php",
+            "size": 2721,
+            "hash": "e7a7bb96fec84a89b64e366121a1195ad784cb8e8695c911f588bd2b8da8e831"
+        },
+        {
+            "type": "folder",
+            "name": "css/img"
+        },
+        {
+            "type": "file",
+            "name": "css/style.css",
+            "size": 128845,
+            "hash": "2286d0310cbfd59c123da08ff83a559d79c32350a5b60d675b79dba3ee7d4221"
+        },
+        {
+            "type": "file",
+            "name": "js/BurySurfDB.js",
+            "size": 3556,
+            "hash": "2abb6eb42e3c987dec0efd57de3b62b3200768e0d957053382e6a5fa5391279e"
+        },
+        {
+            "type": "file",
+            "name": "js/main.js",
+            "size": 4965,
+            "hash": "53a00b43715a8fac6b9fd67aa90b714763af167c11a4329f3313c341f5257faf"
+        },
+        {
+            "type": "file",
+            "name": "css/img/bury_surf.jpg",
+            "size": 134426,
+            "hash": "fb2c49186159fda15d6cb666ef3ebcbc3838b8ed030f114a9d4105dd62ef0e93"
+        },
+        {
+            "type": "file",
+            "name": "css/img/burysurf.png",
+            "size": 419599,
+            "hash": "46ac773659106b3d4d5c0d7f33ab94e3ecb0980ddcc33a4ba9ad85a2bdf21d80"
+        },
+        {
+            "type": "file",
+            "name": "css/img/capa.jpg",
+            "size": 370494,
+            "hash": "14d883fe3f077fdc2cbe8e3beeb9d813236038c8792536a5cb0aad6d7f0493e6"
+        },
+        {
+            "type": "file",
+            "name": "css/img/corpo-tubo.jpg",
+            "size": 107062,
+            "hash": "1cdd1d67285c3087d2aefc06facd10e533d291c3da25e58efad91407eef65cf4"
+        },
+        {
+            "type": "file",
+            "name": "css/img/discord.png",
+            "size": 5033,
+            "hash": "ddb064e7ea1865b65336c9a9d83b68605fd44d46cc9ae8ae79d3bc0599fbd9d7"
+        },
+        {
+            "type": "file",
+            "name": "css/img/email.png",
+            "size": 5937,
+            "hash": "f916e41f0473da86ee531f2ccdc3a5199a255c9cb2ef9858791ca9388ff1685d"
+        },
+        {
+            "type": "file",
+            "name": "css/img/entrada-tubo.jpg",
+            "size": 29248,
+            "hash": "bcb6643cd9fb5dcce93900375431df0f971bb2aee5a1bd18dd5ff1bf217ee9f9"
+        },
+        {
+            "type": "file",
+            "name": "css/img/favicon.png",
+            "size": 385,
+            "hash": "f6ed808a3be06a11190fac696c00f24951d3a8c633df7b83977f591b65942ed7"
+        },
+        {
+            "type": "file",
+            "name": "css/img/facebook.png",
+            "size": 6761,
+            "hash": "de3c6740163af45bbbe2618e1ce337cb302603904ada3db9be456e693aa58201"
+        },
+        {
+            "type": "file",
+            "name": "css/img/feliz2026.png",
+            "size": 961904,
+            "hash": "bec40692541b6721d944c7229f77063f2aaeedb107839f7e5350a3e3ff5f4540"
+        },
+        {
+            "type": "file",
+            "name": "css/img/feliznatal.png",
+            "size": 436346,
+            "hash": "6962a69a5dcb96c3738b1cc7a635b3e1af29f96d18dfff412612d706a2d8f205"
+        },
+        {
+            "type": "file",
+            "name": "css/img/insta.png",
+            "size": 30563,
+            "hash": "1c100e7009e194120a41b594bf97ace700e85ce81a417727041484c5856a3ba0"
+        },
+        {
+            "type": "file",
+            "name": "css/img/instagram.png",
+            "size": 6337,
+            "hash": "534e25e8e93f9e1ce559e5445413fddea89998f9ca214648e49c138675e97577"
+        },
+        {
+            "type": "file",
+            "name": "css/img/kick.png",
+            "size": 6475,
+            "hash": "c1afe079e1cfe3e7cc798cc146aa952774d166412057643c8626222109ba8e4c"
+        },
+        {
+            "type": "file",
+            "name": "css/img/twitch.png",
+            "size": 6299,
+            "hash": "5a84f81b00aa840ed4266e1159c3800f084f248edd9b748305a654713543a6de"
+        },
+        {
+            "type": "file",
+            "name": "css/img/marcadagua.png",
+            "size": 4793,
+            "hash": "da0a27a55b812d0d25110c30bb72f216383aba13c48fdf8208b9998ccb64b5bb"
+        },
+        {
+            "type": "file",
+            "name": "css/img/youtube.png",
+            "size": 5907,
+            "hash": "348b25e4d199151d7690f72fbe8d6e80a6836f0768c48637676c36027c22e23e"
+        }
+    ]
+}
