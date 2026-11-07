@@ -1,0 +1,24 @@
+name: Deploy via FTP
+
+on:
+  push:
+    branches:
+      - main   # ou a branch que você deseja monitorar
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v3
+
+      - name: Deploy para servidor FTP
+        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: ${{ secrets.FTP_PORT }}
+          protocol: ftp   # troque para sftp se for o caso
+          local-dir: ./   # pasta local a enviar
+          server-dir: /public_html/ # pasta no servidor

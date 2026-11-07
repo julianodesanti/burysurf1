@@ -1,0 +1,71 @@
+Newsletter send startedDatabase connectedTable verifiedSubject: TESTEmail() function not availableException: Função mail() não disponível no servidorTrace: #0 {main}Newsletter send startedDatabase connectedTable verifiedSubject: TESTEmail() function not availableException: Função mail() não disponível no servidorTrace: #0 {main}Newsletter send startedDatabase connectedTable verifiedSubject: Novas fotos do dia no bUrY_+sUrFmail() not available and SMTP not configured for: sarfbary@msn.commail() not available and SMTP not configured for: teste10@teste10.commail() not available and SMTP not configured for: teste11@teste11.comSent: 0, Failed: 3, Total: 3Newsletter send startedDatabase connectedTable verifiedSubject: Testemail() not available and SMTP not configured for: sarfbary@msn.commail() not available and SMTP not configured for: teste10@teste10.commail() not available and SMTP not configured for: teste11@teste11.comSent: 0, Failed: 3, Total: 3Newsletter send startedDatabase connectedTable verifiedSubject: Testemail() not available and SMTP not configured for: sarfbary@msn.commail() not available and SMTP not configured for: teste10@teste10.commail() not available and SMTP not configured for: teste11@teste11.comSent: 0, Failed: 3, Total: 3Newsletter send startedDatabase connectedTable verifiedSubject: TestePHPMailer loaded successfully=== Newsletter send started ===check_auth.php loadeddb_config.php loadedDatabase connectedTable verifiedSubject: Novas fotos do dia no bUrY_+sUrFChecking PHPMailer files:  PHPMailer: OK  SMTP: OK  Exception: OKPHPMailer.php loadedSMTP.php loadedException.php loadedAll PHPMailer files loaded successfullyTEST LOG 2026-08-18 15:53:321. Headers sent2. Starting newsletter send3. POST data received4. DB config loaded5. DB connected6. Query executed7. Found 3 subscribers8. Response: sent=3, failed=0ENDTEST LOG 2026-08-18 16:08:351. Headers sent2. Starting newsletter send3. POST data received4. DB config loaded5. DB connected6. Query executed7. Found 3 subscribers8. Response: sent=3, failed=0END[2026-08-18 16:27:33] START
+[2026-08-18 16:27:33] Loading PHPMailer
+[2026-08-18 16:27:33] PHPMailer classes loaded
+[2026-08-18 16:27:33] Subject: Teste...
+[2026-08-18 16:27:33] Database config loaded
+[2026-08-18 16:27:33] Fetching subscribers...
+[2026-08-18 16:27:33] Found 3 valid emails
+[2026-08-18 16:27:33] Starting email sending...
+[2026-08-18 16:27:33] Sending to: sarfbary@msn.com
+[2026-08-18 16:30:43] START
+[2026-08-18 16:30:43] Loading PHPMailer
+[2026-08-18 16:30:43] PHPMailer classes loaded
+[2026-08-18 16:30:43] Subject: Novas fotos do dia no bUrY_+sUrF...
+[2026-08-18 16:30:43] Database config loaded
+[2026-08-18 16:30:43] Fetching subscribers...
+[2026-08-18 16:30:43] Found 3 valid emails
+[2026-08-18 16:30:43] Starting email sending...
+[2026-08-18 16:30:43] Sending to: sarfbary@msn.com
+[2026-08-18 16:30:45]   ✓ SENT OK
+[2026-08-18 16:30:45] Sending to: teste10@teste10.com
+[2026-08-18 16:30:47]   ✓ SENT OK
+[2026-08-18 16:30:47] Sending to: teste11@teste11.com
+[2026-08-18 16:30:48]   ✓ SENT OK
+[2026-08-18 16:30:48] DONE - Sent: 3, Failed: 0
+[2026-08-18 16:30:48] END
+[2026-08-18 16:42:37] START
+[2026-08-18 16:42:37] Loading PHPMailer
+[2026-08-18 16:42:37] PHPMailer classes loaded
+[2026-08-18 16:42:37] Subject: teste...
+[2026-08-18 16:42:37] Database config loaded
+[2026-08-18 16:42:37] Fetching subscribers...
+[2026-08-18 16:42:37] Found 3 valid emails
+[2026-08-18 16:42:37] Starting email sending...
+[2026-08-18 16:42:37] Sending to: sarfbary@msn.com
+[2026-08-18 16:42:38]   ✓ SENT OK
+[2026-08-18 16:42:38] Sending to: teste10@teste10.com
+[2026-08-18 16:42:40]   ✓ SENT OK
+[2026-08-18 16:42:40] Sending to: teste11@teste11.com
+[2026-08-18 16:42:42]   ✓ SENT OK
+[2026-08-18 16:42:42] DONE - Sent: 3, Failed: 0
+[2026-08-18 16:42:42] END
+[2026-08-18 20:13:10] START
+[2026-08-18 20:13:10] Loading PHPMailer
+[2026-08-18 20:13:10] PHPMailer classes loaded
+[2026-08-18 20:13:10] Subject: Praia...
+[2026-08-18 20:13:10] Database config loaded
+[2026-08-18 20:13:10] Fetching subscribers...
+[2026-08-18 20:13:10] Found 2 valid emails
+[2026-08-18 20:13:10] Starting email sending...
+[2026-08-18 20:13:10] Sending to: sarfbary@msn.com
+[2026-08-18 20:13:11]   ✓ SENT OK
+[2026-08-18 20:13:11] Sending to: cassiarc62@gmail.com.br
+[2026-08-18 20:13:13]   ✓ SENT OK
+[2026-08-18 20:13:13] DONE - Sent: 2, Failed: 0
+[2026-08-18 20:13:13] END
+[2026-08-18 20:16:40] START
+[2026-08-18 20:16:40] Loading PHPMailer
+[2026-08-18 20:16:40] PHPMailer classes loaded
+[2026-08-18 20:16:40] Subject: Praia...
+[2026-08-18 20:16:40] Database config loaded
+[2026-08-18 20:16:40] Fetching subscribers...
+[2026-08-18 20:16:40] Found 3 valid emails
+[2026-08-18 20:16:40] Starting email sending...
+[2026-08-18 20:16:40] Sending to: sarfbary@msn.com
+[2026-08-18 20:16:41]   ✓ SENT OK
+[2026-08-18 20:16:41] Sending to: cassiarc62@gmail.com.br
+[2026-08-18 20:16:43]   ✓ SENT OK
+[2026-08-18 20:16:43] Sending to: cassiarc62@gmail.com
+[2026-08-18 20:16:44]   ✓ SENT OK
+[2026-08-18 20:16:44] DONE - Sent: 3, Failed: 0
+[2026-08-18 20:16:44] END
