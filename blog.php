@@ -56,7 +56,7 @@
 		</div>
 
 		<div id="blog">
-			<div id="titulo">
+			<div id="tag">
 				<span>SUPERFÍCIE: A NOVA BANCADA DE AREIA</span>
 			</div>
 			<div id="redimencionamento">
@@ -87,13 +87,13 @@
 						// Para cada post retornado pela API, adiciona _+ e os dados do post
 						$.each(data, function(index, post) {
 							var postHtml = `
-								<div id="titulo">
+								<div id="tag">
 									<span>_+</span>
 								</div>
 								<article>
-									<h2>${post.titulo}</h2>
+									<h2>${post.tag}</h2>
 							<p class="data">Publicado em ${new Date(post.publication_date).toLocaleDateString()}</p>
-							${post.imagem ? `<img src="/upload_posts/${post.imagem}" alt="${post.titulo}">` : ''}
+							${post.imagem ? `<img src="/upload_posts/${post.imagem}" alt="${post.tag}">` : ''}
 									<p>${post.conteudo}</p>
 								</article>
 							`;

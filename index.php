@@ -137,7 +137,7 @@ foreach ($spots as $spot):
     $cond = isset($conditions[$sid]) ? $conditions[$sid] : null;
 ?>
             <div id="grid">
-                <div id="titulo">
+                <div id="tag">
                     <span>_+</span>
                 </div>
                 <span><?php echo htmlspecialchars($spot['name']); ?></span>
