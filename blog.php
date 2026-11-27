@@ -91,9 +91,9 @@
 									<span>_+</span>
 								</div>
 								<article>
-									<h2>${post.tag}</h2>
+									<h2>${post.titulo}</h2>
 							<p class="data">Publicado em ${new Date(post.publication_date).toLocaleDateString()}</p>
-							${post.imagem ? `<img src="/upload_posts/${post.imagem}" alt="${post.tag}">` : ''}
+							${post.imagem ? `<img src="/upload_posts/${post.imagem}" alt="${post.titulo}">` : ''}
 									<p>${post.conteudo}</p>
 								</article>
 							`;
