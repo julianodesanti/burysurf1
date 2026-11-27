@@ -39,6 +39,7 @@ if ($newsletterResult) {
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
     <meta name="google-adsense-account" content="ca-pub-4006894197637352">
+    <meta name="msvalidate.01" content="7A6CCDC3D6E6A9C1A9D08AE441B14D08" />
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="copyright" content="© 2026 bUrY_+sUrF"/>
