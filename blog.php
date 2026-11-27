@@ -37,7 +37,7 @@
 			</div>
 			<div id="lema">
 				<span>
-					PIOR QUE A CULPA É A REINCIDÊNCIA
+					<h1>PIOR QUE A CULPA É A REINCIDÊNCIA</h1>
 				</span>
 			</div>
 		</div>

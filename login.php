@@ -56,7 +56,7 @@ require_once __DIR__ . '/api/db_config.php';
             </div>
             <div id="lema">
                 <span>
-                    PIOR QUE A CULPA É A REINCIDÊNCIA
+                    <h1>PIOR QUE A CULPA É A REINCIDÊNCIA</h1>
                 </span>
             </div>
         </div>
