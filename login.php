@@ -35,8 +35,9 @@ require_once __DIR__ . '/api/db_config.php';
 	<meta property="og:description" content="Previsão semanal de ondas & registro histórico fenomenológico da orla de Balneário Camboriú (blogue & vlogue)"/>
 	<meta property="og:locale" content="pt_BR" />
 	<link rel="stylesheet" type="text/css" href="./css/style.css"/>
+    <link rel="apple-touch-icon" href="/css/img/favicon.png">
 	<title>bUrY_+sUrF</title>
-	<link rel="icon" type="image/x-icon" href="./css/img/favicon.png">
+	<link rel="icon" type="image/png" href="/css/img/favicon.png">
 </head>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-S5G2HVDDKB">

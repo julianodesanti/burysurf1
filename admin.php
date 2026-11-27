@@ -35,8 +35,27 @@ if ($newsletterResult) {
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <meta name="google-adsense-account" content="ca-pub-4006894197637352">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="copyright" content="© 2026 bUrY_+sUrF"/>
+    <meta name="author" content="Juliano Desanti Carvalho Dalmora"/>
+    <meta name="description"
+		content="Weekly wave forecast & historical phenomenological record of the Balneário Camboriú coastline (blog & vlog)." />
+	<meta name="keywords" content="sand, surf, beach, wave, waves, bc, balneário, camboriú, balneário camboriú" />
+	<meta property="og:title" content="bUrY_+sUrF" />
+	<meta property="og:type" content="website" />
+	<meta property="og:image" content="./css/img/bury_surf.jpg" />
+	<meta property="og:url" content="https://burysurf.com/vlog.html" />
+	<meta property="og:description"
+		content="Weekly wave forecast & historical phenomenological record of the Balneário Camboriú coastline (blog & vlog)." />
+    <meta property="og:locale" content="pt_BR" />
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <link rel="icon" type="image/png" href="/css/img/favicon.png">
+    <link rel="apple-touch-icon" href="/css/img/favicon.png">
     <title>Admin - bUrY_+sUrF</title>
     <link rel="stylesheet" href="./css/style.css" />
     <style>

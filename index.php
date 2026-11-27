@@ -39,7 +39,8 @@ if ($sres = $conn->query($spotSql)) {
     <meta property="og:locale" content="pt_BR" />
     <link rel="stylesheet" type="text/css" href="css/style.css"/>
     <title>bUrY_+sUrF</title>
-    <link rel="icon" type="image/x-icon" href="css/img/favicon.png">
+    <link rel="icon" type="image/png" href="/css/img/favicon.png">
+    <link rel="apple-touch-icon" href="/css/img/favicon.png">
     <style>
         .newsletter-modal {
             position: fixed;
